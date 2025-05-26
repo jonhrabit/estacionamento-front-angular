@@ -1,11 +1,31 @@
-import { Component } from '@angular/core';
+import { AuthService } from './../../auth.service';
+import { Component, OnInit } from '@angular/core';
+import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AlterarSenhaComponent } from '../../auth/alterar-senha/alterar-senha.component'
 
 @Component({
   selector: 'app-navbar',
-  imports: [],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  imports: [NgbDropdownModule],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+  nomeUsuario = 'Entrar';
 
+  constructor(private modalService: NgbModal, private authService:AuthService) {}
+
+  ngOnInit() {
+    this.nomeUsuario = this.authService.getUsuarioLogado()?.sub || 'Entrar';
+  }
+
+  alterarSenha() {
+    this.modalService.open(AlterarSenhaComponent, { centered: true });
+  }
+
+  logout() {
+    this.authService.logout();
+  }
+
+  isLogado(): boolean {
+    return this.authService.isLoggedIn();
+  }
 }

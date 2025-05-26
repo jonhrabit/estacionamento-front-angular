@@ -1,0 +1,34 @@
+<div class="modal-header">
+  <h5 class="modal-title">Alterar Senha</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="senhaForm" (ngSubmit)="alterarSenha()">
+    <div class="mb-3">
+      <label>Senha atual</label>
+      <input type="password" class="form-control" formControlName="senhaAtual" />
+    </div>
+
+    <div class="mb-3">
+      <label>Nova senha</label>
+      <input type="password" class="form-control" formControlName="novaSenha" />
+    </div>
+
+    <div class="mb-3">
+      <label>Confirmar nova senha</label>
+      <input type="password" class="form-control" formControlName="confirmarSenha" />
+      @if (senhaForm.hasError('mismatch')) {
+      <div class="text-danger mt-1">
+        As senhas não coincidem.
+      </div>
+      }
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" type="button" (click)="activeModal.dismiss()">Cancelar</button>
+      <button class="btn btn-primary" type="submit" [disabled]="senhaForm.invalid">Salvar</button>
+    </div>
+  </form>
+</div>

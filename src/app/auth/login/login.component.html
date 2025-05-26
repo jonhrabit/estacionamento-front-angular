@@ -1,1 +1,44 @@
-<p>login works!</p>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header text-center">
+          <h3>Login</h3>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+            <div class="form-group mb-3">
+              <label for="username">Usuário</label>
+              <input
+                type="text"
+                id="username"
+                class="form-control"
+                name="username"
+                [(ngModel)]="username"
+                required
+              />
+            </div>
+            <div class="form-group mb-3">
+              <label for="password">Senha</label>
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                name="password"
+                [(ngModel)]="password"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary w-100"
+              [disabled]="!loginForm.valid"
+            >
+              Entrar
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

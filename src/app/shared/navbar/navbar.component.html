@@ -1,1 +1,45 @@
-<p>navbar works!</p>
+@if (isLogado()) {
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+  <a class="navbar-brand me-4" href="#">Estacionamento</a>
+
+  <div class="collapse navbar-collapse">
+    <!-- Esquerda -->
+    <ul class="navbar-nav me-auto">
+      <!-- Dropdown 1 -->
+      <li class="nav-item dropdown" ngbDropdown>
+        <div class="nav-link dropdown-toggle" ngbDropdownToggle href="#">Cadastros</div>
+        <ul ngbDropdownMenu>
+          <li><a class="dropdown-item" routerLink="/pessoas">Pessoas</a></li>
+          <li><a class="dropdown-item" routerLink="/veiculos">Veículos</a></li>
+        </ul>
+      </li>
+
+      <!-- Dropdown 2 -->
+      <li class="nav-item dropdown" ngbDropdown>
+        <a class="nav-link dropdown-toggle" ngbDropdownToggle >Relatórios</a>
+        <ul ngbDropdownMenu>
+          <li><a class="dropdown-item" routerLink="/relatorio1">Relatório 1</a></li>
+          <li><a class="dropdown-item" routerLink="/relatorio2">Relatório 2</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <!-- Direita - Usuário com Dropdown -->
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item dropdown" ngbDropdown>
+        <button class="btn btn-outline-light dropdown-toggle" id="userDropdown" ngbDropdownToggle>
+          <i class="bi bi-person-circle me-1"></i>
+          {{ nomeUsuario }}
+        </button>
+        <ul ngbDropdownMenu aria-labelledby="userDropdown">
+          <li><a class="dropdown-item" (click)="alterarSenha()">Alterar senha</a></li>
+          <li><a class="dropdown-item" href="/usuarios">Usuários</a></li>
+          <li><a class="dropdown-item" href="#" (click)="logout()">Sair</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+}
+
+
