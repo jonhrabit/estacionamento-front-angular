@@ -1,0 +1,46 @@
+<div class="modal-header">
+  <h5 class="modal-title">Editar Veículo</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="cancelar()"></button>
+</div>
+<form (ngSubmit)="salvar()" #form="ngForm">
+  <div class="modal-body">
+    <div class="mb-3">
+      <label for="placa" class="form-label">Placa</label>
+      <input id="placa" name="placa" class="form-control" [(ngModel)]="veiculo.placa" required />
+    </div>
+    <div class="mb-3">
+      <label for="modelo" class="form-label">Modelo</label>
+      <input id="modelo" name="modelo" class="form-control" [(ngModel)]="veiculo.modelo" />
+    </div>
+    <div class="mb-3">
+      <label for="cor" class="form-label">Cor</label>
+      <input id="cor" name="cor" class="form-control" [(ngModel)]="veiculo.cor" />
+    </div>
+    <div class="mb-3">
+      <label for="foto" class="form-label">Foto (URL)</label>
+      <input id="foto" name="foto" class="form-control" [(ngModel)]="veiculo.foto" />
+    </div>
+    <div class="mb-3">
+      <label for="temporario" class="form-label">Temporário</label>
+      <input id="temporario" name="temporario" type="checkbox" class="form-check-input ms-2" [(ngModel)]="veiculo.temporario" />
+    </div>
+    <div class="mb-3">
+      <label for="dataLimite" class="form-label">Data Limite</label>
+      <input id="dataLimite" name="dataLimite" type="date" class="form-control" [(ngModel)]="veiculo.dataLimite" />
+    </div>
+    <div class="mb-3">
+      <label for="pessoa" class="form-label">Pessoa</label>
+      <input id="pessoa" name="pessoa" class="form-control"
+        [ngbTypeahead]="searchPessoa"
+        [(ngModel)]="veiculo.pessoa"
+        [resultFormatter]="formatterPessoa"
+        [inputFormatter]="formatterPessoa"
+        [editable]="false"
+        required />
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salvar</button>
+  </div>
+</form>

@@ -1,1 +1,48 @@
 <p>veiculos works!</p>
+<button class="btn btn-success mb-3" (click)="novoVeiculo()">Novo Veículo</button>
+<div class="mb-3">
+  <input type="text" class="form-control" placeholder="Filtrar por placa/modelo..." [(ngModel)]="filtro" (input)="aplicarFiltro()">
+</div>
+<div *ngIf="veiculosFiltrados.length === 0">
+  <div class="alert alert-info">Nenhum veículo encontrado.</div>
+</div>
+<table class="table table-striped" *ngIf="veiculosFiltrados.length > 0">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Placa</th>
+      <th>Modelo</th>
+      <th>Cor</th>
+      <th>Ano</th>
+      <th>Pessoa ID</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let veiculo of veiculosPaginados">
+      <td>{{ veiculo.id }}</td>
+      <td>{{ veiculo.placa }}</td>
+      <td>{{ veiculo.modelo }}</td>
+      <td>{{ veiculo.cor }}</td>
+      <td>{{ veiculo.ano }}</td>
+      <td>{{ veiculo.pessoaId }}</td>
+      <td>
+        <button class="btn btn-sm btn-primary me-2" (click)="abrirModalEdicao(veiculo)">Editar</button>
+        <button class="btn btn-sm btn-danger" (click)="excluirVeiculo(veiculo)">Excluir</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<nav *ngIf="veiculosFiltrados.length > itensPorPagina">
+  <ul class="pagination">
+    <li class="page-item" [class.disabled]="paginaAtual === 1">
+      <button class="page-link" (click)="paginaAtual = paginaAtual - 1" [disabled]="paginaAtual === 1">Anterior</button>
+    </li>
+    <li class="page-item" *ngFor="let pagina of [].constructor(totalPaginas); let i = index" [class.active]="paginaAtual === i + 1">
+      <button class="page-link" (click)="paginaAtual = i + 1">{{ i + 1 }}</button>
+    </li>
+    <li class="page-item" [class.disabled]="paginaAtual === totalPaginas">
+      <button class="page-link" (click)="paginaAtual = paginaAtual + 1" [disabled]="paginaAtual === totalPaginas">Próxima</button>
+    </li>
+  </ul>
+</nav>

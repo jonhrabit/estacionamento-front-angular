@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <h5 class="modal-title">Editar Acesso</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="cancelar()"></button>
+</div>
+<form (ngSubmit)="salvar()" #form="ngForm">
+  <div class="modal-body">
+    <div class="mb-3">
+      <label for="pessoaId" class="form-label">Pessoa ID</label>
+      <input id="pessoaId" name="pessoaId" class="form-control" [(ngModel)]="acesso.pessoaId" />
+    </div>
+    <div class="mb-3">
+      <label for="veiculoId" class="form-label">Veículo ID</label>
+      <input id="veiculoId" name="veiculoId" class="form-control" [(ngModel)]="acesso.veiculoId" />
+    </div>
+    <div class="mb-3">
+      <label for="dataHoraEntrada" class="form-label">Data/Hora Entrada</label>
+      <input id="dataHoraEntrada" name="dataHoraEntrada" class="form-control" [(ngModel)]="acesso.dataHoraEntrada" type="datetime-local" />
+    </div>
+    <div class="mb-3">
+      <label for="dataHoraSaida" class="form-label">Data/Hora Saída</label>
+      <input id="dataHoraSaida" name="dataHoraSaida" class="form-control" [(ngModel)]="acesso.dataHoraSaida" type="datetime-local" />
+    </div>
+    <div class="mb-3">
+      <label for="observacao" class="form-label">Observação</label>
+      <textarea id="observacao" name="observacao" class="form-control" [(ngModel)]="acesso.observacao"></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salvar</button>
+  </div>
+</form>
