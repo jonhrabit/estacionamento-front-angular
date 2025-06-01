@@ -1,1 +1,32 @@
-<p>usuarios-lista works!</p>
+<button class="btn btn-success mb-3" (click)="novoUsuario()">Novo Usuário</button>
+<div *ngIf="loading">Carregando usuários...</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+<table class="table table-striped" *ngIf="!loading && usuarios.length">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>CPF</th>
+      <th>Cadastro</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let usuario of usuarios">
+      <td>{{ usuario.id }}</td>
+      <td>{{ usuario.nome }}</td>
+      <td>{{ usuario.username }}</td>
+      <td>{{ usuario.email }}</td>
+      <td>{{ usuario.cpf }}</td>
+      <td>{{ usuario.cadastro | date:'short' }}</td>
+      <td>
+        <button class="btn btn-sm btn-primary me-2" (click)="abrirModalEdicao(usuario)">Editar</button>
+        <button class="btn btn-sm btn-danger me-2" (click)="excluirUsuario(usuario)">Excluir</button>
+        <button class="btn btn-sm btn-warning" (click)="resetarSenhaUsuario(usuario)">Resetar Senha</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div *ngIf="!loading && !usuarios.length">Nenhum usuário encontrado.</div>

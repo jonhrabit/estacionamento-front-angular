@@ -4,20 +4,19 @@ import { Observable } from 'rxjs';
 import { Usuario } from './usuario';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UsuarioService {
+  private apiUrl = 'usuarios/';
 
-  private apiUrl = 'usuarios';
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getUsuarios(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(this.apiUrl);
   }
 
   getUsuario(id: number): Observable<Usuario> {
-    return this.http.get<Usuario>(`${this.apiUrl}/${id}`);
+    return this.http.get<Usuario>(`${this.apiUrl}${id}`);
   }
 
   createUsuario(usuario: Usuario): Observable<Usuario> {
@@ -25,12 +24,20 @@ export class UsuarioService {
   }
 
   updateUsuario(id: number, usuario: Usuario): Observable<Usuario> {
-    return this.http.put<Usuario>(`${this.apiUrl}/${id}`, usuario);
+    return this.http.put<Usuario>(`${this.apiUrl}${id}`, usuario);
+  }
+
+  passwordResetUsuario(id: number): Observable<Usuario> {
+    return this.http.put<Usuario>(`${this.apiUrl}resetsenha/${id}`,null);
+  }
+
+  passwordAlterarUsuario(id: number, novaSenha:String, senha:String): Observable<Usuario> {
+    return this.http.put<Usuario>(`${this.apiUrl}alterarsenha/${id}`, {
+      senhaAtual: senha,
+      novaSenha: novaSenha});
   }
 
   deleteUsuario(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}${id}`);
   }
-
-
 }

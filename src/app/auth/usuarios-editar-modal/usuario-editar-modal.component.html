@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <h5 class="modal-title">Editar Usuário</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="cancelar()"></button>
+</div>
+<form (ngSubmit)="salvar()" #form="ngForm">
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <!-- Inputs atuais -->
+        <div class="mb-3">
+          <label for="nome" class="form-label">Nome</label>
+          <input id="nome" name="nome" class="form-control" [(ngModel)]="usuario.nome" required />
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input id="username" name="username" class="form-control" [(ngModel)]="usuario.username" required />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input id="email" name="email" class="form-control" [(ngModel)]="usuario.email" required />
+        </div>
+        <div class="mb-3">
+          <label for="cpf" class="form-label">CPF</label>
+          <input id="cpf" name="cpf" class="form-control" [(ngModel)]="usuario.cpf" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Permissões</label>
+        <div class="form-check" *ngFor="let permissao of permissoes">
+          <input class="form-check-input" type="checkbox" [id]="'permissao_' + permissao"
+            [value]="permissao"
+            [checked]="permissaoid(permissao)"
+            (change)="onPermissaoChange($event, permissao)" />
+          <label class="form-check-label" [for]="'permissao_' + permissao">{{ permissao }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salvar</button>
+  </div>
+</form>

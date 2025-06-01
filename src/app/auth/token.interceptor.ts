@@ -1,14 +1,12 @@
 import { AuthService } from './auth.service';
-import { environment } from './environment';
+import { environment } from '../environment';
 import { HttpInterceptorFn } from '@angular/common/http';
 import { Inject } from '@angular/core';
 
-
-
 export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
-
   // Obtém o usuário logado
-  const usuario = Inject(AuthService).getUsuarioLogado();
+  //const usuario = Inject(AuthService).getUsuarioLogado();
+
 
   let apiReq = req;
   apiReq = req.clone({
@@ -19,13 +17,13 @@ export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
   });
 
   // 🔐 Adiciona o token, se existir
-  if (usuario?.token) {
+/*   if (usuario?.token) {
     apiReq = apiReq.clone({
       setHeaders: {
         Authorization: `Bearer ${usuario.token}`,
       },
     });
-  }
+  } */
 
   // Handle the request and response
   return next(apiReq);

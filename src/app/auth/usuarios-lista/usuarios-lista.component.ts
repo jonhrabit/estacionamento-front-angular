@@ -1,55 +1,120 @@
-import { Usuario } from '../usuario';
-import { UsuarioService } from './../usuario.service';
+import { ToastService } from './../../shared/toast-global/toast.service';
 import { Component, OnInit } from '@angular/core';
+import { UsuarioService } from '../usuario.service';
+import { Usuario } from '../usuario';
 import { CommonModule } from '@angular/common';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UsuarioEditarModalComponent } from '../usuarios-editar-modal/usuario-editar-modal.component';
 
 @Component({
   selector: 'app-usuarios-lista',
-  imports: [CommonModule],
   templateUrl: './usuarios-lista.component.html',
-  styleUrl: './usuarios-lista.component.scss',
+  imports: [CommonModule],
 })
 export class UsuariosListaComponent implements OnInit {
-  private usuarios: Usuario[] = [];
-  usuariosFiltradas: Usuario[] = [];
+  usuarios: Usuario[] = [];
+  loading = false;
+  error = '';
 
-  // paginação
-  page: number = 1;
-  pageSize: number = 5;
+  constructor(private usuarioService: UsuarioService, private modalService: NgbModal, private toast:ToastService) { }
 
-  // filtro
-  filtro: string = '';
+  ngOnInit(): void {
+    this.loading = true;
+    this.usuarioService.getUsuarios().subscribe({
+      next: (data) => {
+        this.usuarios = data;
+        console.log('Usuários carregados:', this.usuarios);
 
-  constructor(private usuarioService: UsuarioService) {}
-
-  ngOnInit() {
-    this.usuarioService.getUsuarios().subscribe((usuarios) => {
-      this.usuarios = usuarios;
-    });
-  }
-
-  editarUsuario(id:number, usuario: Usuario) {
-    this.usuarioService.updateUsuario(id, usuario).subscribe((updatedUsuario) => {
-      const index = this.usuarios.findIndex((u) => u.id === updatedUsuario.id);
-      if (index !== -1) {
-        this.usuarios[index] = updatedUsuario;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = 'Erro ao carregar usuários';
+        this.loading = false;
       }
     });
   }
-  eliminarUsuario(usuario: Usuario) {
-    this.usuarioService.deleteUsuario(usuario.id).subscribe(() => {
-      this.usuarios = this.usuarios.filter((u) => u.id !== usuario.id);
-    });
-  }
-  getUsuarios(): Usuario[] {
-    return this.usuarios;
+
+  abrirModalEdicao(usuario: Usuario) {
+    const modalRef = this.modalService.open(UsuarioEditarModalComponent, { size: 'lg' });
+    modalRef.componentInstance.usuario = { ...usuario };
+    modalRef.result.then((result) => {
+      if (result) { // Verifica o resultado do modal
+        // Aqui você pode chamar o service para atualizar o usuário
+        this.usuarioService.updateUsuario(result.id, result).subscribe(() => {
+          // Atualiza a lista após edição
+          const idx = this.usuarios.findIndex(u => u.id === result.id);
+          if (idx > -1) this.usuarios[idx] = result;
+        });
+      }
+    }, () => {});
   }
 
-  aplicarFiltro(): void {
-    const termo = this.filtro.toLowerCase().trim();
-    this.usuariosFiltradas = this.usuarios.filter((p) =>
-      p.nome.toLowerCase().includes(termo)
-    );
-    this.page = 1; // volta para primeira página após filtrar
+  excluirUsuario(usuario: Usuario) {
+    if (window.confirm(`Deseja realmente excluir o usuário ${usuario.nome}?`)) {
+      if(usuario.id === 1) {
+        this.error = 'Usuário administrador não pode ser excluído.';
+        return;
+      }
+      if (usuario.id != undefined) {
+        // Chama o serviço para excluir o usuário
+        this.usuarioService.deleteUsuario(usuario.id).subscribe({
+          next: () => {
+            this.toast.show('Usuário excluído com sucesso!', 'success');
+            this.usuarios = this.usuarios.filter((u) => u.id !== usuario.id);
+          },
+          error: () => {
+            this.error = 'Erro ao excluir usuário.';
+          },
+        });
+      }
+    }
+  }
+
+  novoUsuario() {
+    const modalRef = this.modalService.open(UsuarioEditarModalComponent, { size: 'lg' });
+    modalRef.componentInstance.usuario = {
+      id: 0,
+      nome: '',
+      username: '',
+      password: '',
+      email: '',
+      cpf: '',
+      cadastro: new Date(),
+      permissoes: []
+    };
+    modalRef.result.then((result:Usuario) => {
+      if (result) {
+        delete result.id; // Remover o ID para novo usuário
+        this.usuarioService.createUsuario(result).subscribe({
+         next: (data) => {
+          this.toast.show('Usuário criado com sucesso!', 'success');
+          this.usuarios.push(data); // Adiciona o novo usuário à lista
+         this.loading = false;
+         },
+         error: (erro) => {
+          console.log(erro)
+          this.toast.show(erro.error.text, 'danger');
+        },
+         complete: () => {
+
+         },
+        });
+      }
+    }, () => {});
+  }
+
+  resetarSenhaUsuario(usuario: Usuario) {
+    if (window.confirm(`Deseja realmente resetar a senha do usuário ${usuario.nome}?`)) {
+      if (usuario.id != undefined) {
+        this.usuarioService.passwordResetUsuario(usuario.id).subscribe({
+          next: () => {
+            this.toast.show('Senha resetada com sucesso!', 'success');
+          },
+          error: (erro) => {
+            this.toast.show('Erro ao resetar senha.', 'danger');
+          }
+        });
+      }
+    }
   }
 }

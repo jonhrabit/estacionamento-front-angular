@@ -2,16 +2,20 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './home/home.component';
 import { UsuariosListaComponent } from './auth/usuarios-lista/usuarios-lista.component';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './auth/auth.guard';
+import { PessoasComponent } from './estacionamento/pessoas/pessoas.component';
+import { VeiculosComponent } from './estacionamento/veiculos/veiculos.component';
+import { AcessosComponent } from './estacionamento/acessos/acessos.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'pessoas', component: PessoasComponent, canActivate: [AuthGuard] },
+  { path: 'veiculos', component: VeiculosComponent, canActivate: [AuthGuard] },
+  { path: 'acessos', component: AcessosComponent, canActivate: [AuthGuard] },
   {
     path: 'usuarios',
     component: UsuariosListaComponent,
     canActivate: [AuthGuard],
   },
   { path: 'login', component: LoginComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: '**', redirectTo: '/home' },
 ];

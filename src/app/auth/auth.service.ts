@@ -21,7 +21,7 @@ interface AuthSession {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly STORAGE_KEY = 'estacionamento';
+  public readonly STORAGE_KEY = 'estacionamento';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -34,11 +34,7 @@ export class AuthService {
       .pipe(
         tap((response) => {
           const decoded = jwtDecode(response.token);
-          const token = JSON.stringify(decoded);
           const dados = {...decoded, ...response}
-
-
-          console.log('Decoded JWT:', dados);
           sessionStorage.setItem(this.STORAGE_KEY, JSON.stringify(dados));
 
 

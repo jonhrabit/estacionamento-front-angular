@@ -1,4 +1,4 @@
-import { AuthService } from './../../auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlterarSenhaComponent } from '../../auth/alterar-senha/alterar-senha.component'
