@@ -8,7 +8,6 @@ import {
   debounceTime,
   distinctUntilChanged,
   map,
-  switchMap,
 } from 'rxjs/operators';
 
 @Component({
@@ -58,9 +57,8 @@ export class VeiculoEditarModalComponent implements OnInit {
 
   salvar() {
     // Salva apenas o id da pessoa selecionada
-    if (typeof this.veiculo.pessoaId === 'object' && this.veiculo.pessoaId.id) {
-      this.veiculo.pessoaId = this.veiculo.pessoaId.id;
-    }
+
+    console.log(this.veiculo);
     this.activeModal.close(this.veiculo);
   }
 

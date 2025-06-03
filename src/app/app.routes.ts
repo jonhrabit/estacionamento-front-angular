@@ -9,6 +9,7 @@ import { AcessosComponent } from './estacionamento/acessos/acessos.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'pessoas', component: PessoasComponent, canActivate: [AuthGuard] },
   { path: 'veiculos', component: VeiculosComponent, canActivate: [AuthGuard] },
   { path: 'acessos', component: AcessosComponent, canActivate: [AuthGuard] },

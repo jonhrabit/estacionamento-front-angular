@@ -1,7 +1,7 @@
 import { Veiculo } from "./veiculo";
 
 export interface Acesso {
-  id:number;
+  id?:number;
   veiculo: Veiculo;
   entrada: Date;
   saida: Date;

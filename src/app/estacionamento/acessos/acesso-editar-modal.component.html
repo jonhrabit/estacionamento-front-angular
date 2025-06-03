@@ -5,20 +5,22 @@
 <form (ngSubmit)="salvar()" #form="ngForm">
   <div class="modal-body">
     <div class="mb-3">
-      <label for="pessoaId" class="form-label">Pessoa ID</label>
-      <input id="pessoaId" name="pessoaId" class="form-control" [(ngModel)]="acesso.pessoaId" />
+      <label for="veiculo" class="form-label">Veículo</label>
+      <input id="veiculo" name="veiculo" class="form-control"
+        [ngbTypeahead]="searchVeiculo"
+        [(ngModel)]="acesso.veiculo"
+        [resultFormatter]="formatterVeiculo"
+        [inputFormatter]="viewVeiculo"
+        [editable]="false"
+        required />
     </div>
     <div class="mb-3">
-      <label for="veiculoId" class="form-label">Veículo ID</label>
-      <input id="veiculoId" name="veiculoId" class="form-control" [(ngModel)]="acesso.veiculoId" />
+      <label for="entrada" class="form-label">Entrada</label>
+      <input id="entrada" name="entrada" type="datetime-local" class="form-control" [(ngModel)]="acesso.entrada" />
     </div>
     <div class="mb-3">
-      <label for="dataHoraEntrada" class="form-label">Data/Hora Entrada</label>
-      <input id="dataHoraEntrada" name="dataHoraEntrada" class="form-control" [(ngModel)]="acesso.dataHoraEntrada" type="datetime-local" />
-    </div>
-    <div class="mb-3">
-      <label for="dataHoraSaida" class="form-label">Data/Hora Saída</label>
-      <input id="dataHoraSaida" name="dataHoraSaida" class="form-control" [(ngModel)]="acesso.dataHoraSaida" type="datetime-local" />
+      <label for="saida" class="form-label">Saída</label>
+      <input id="saida" name="saida" type="datetime-local" class="form-control" [(ngModel)]="acesso.saida" />
     </div>
     <div class="mb-3">
       <label for="observacao" class="form-label">Observação</label>

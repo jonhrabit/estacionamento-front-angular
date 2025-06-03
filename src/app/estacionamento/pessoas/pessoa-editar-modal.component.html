@@ -4,39 +4,65 @@
 </div>
 <form (ngSubmit)="salvar()" #form="ngForm">
   <div class="modal-body">
-    <div class="mb-3">
-      <label for="nome" class="form-label">Nome</label>
-      <input id="nome" name="nome" class="form-control" [(ngModel)]="pessoa.nome" required />
+    <div class="row">
+      <div class="col-6">
+        <div class="mb-3">
+          <label for="nome" class="form-label">Nome</label>
+          <input id="nome" name="nome" class="form-control" [(ngModel)]="pessoa.nome" required />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="mb-3">
+          <label for="numFunc" class="form-label">Número Funcional</label>
+          <input id="numFunc" name="numFunc" class="form-control" [(ngModel)]="pessoa.numFunc" />
+        </div>
+
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="numFunc" class="form-label">Número Funcional</label>
-      <input id="numFunc" name="numFunc" class="form-control" [(ngModel)]="pessoa.numFunc" />
+    <div class="row">
+      <div class="col-3">
+        <div class="mb-3">
+          <label for="tipoVinculo" class="form-label">Tipo de Vínculo</label>
+          <input id="tipoVinculo" name="tipoVinculo" class="form-control" [(ngModel)]="pessoa.tipoVinculo" />
+        </div>
+
+      </div>
+      <div class="col-9">
+        <div class="mb-3">
+          <label for="cargo" class="form-label">Cargo</label>
+          <input id="cargo" name="cargo" class="form-control" [(ngModel)]="pessoa.cargo" />
+        </div>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="tipoVinculo" class="form-label">Tipo de Vínculo</label>
-      <input id="tipoVinculo" name="tipoVinculo" class="form-control" [(ngModel)]="pessoa.tipoVinculo" />
+
+    <div class="row">
+      <div class="col-6">
+        <div class="mb-3">
+          <label for="fgOuCc" class="form-label">FG/CC</label>
+          <input id="fgOuCc" name="fgOuCc" class="form-control" [(ngModel)]="pessoa.fgOuCc" />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="mb-3">
+          <label for="lotacao" class="form-label">Lotação</label>
+          <input id="lotacao" name="lotacao" class="form-control" [(ngModel)]="pessoa.lotacao" />
+        </div>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="cargo" class="form-label">Cargo</label>
-      <input id="cargo" name="cargo" class="form-control" [(ngModel)]="pessoa.cargo" />
+    <div class="row">
+      <div class="col-6">
+        <div class="mb-3">
+          <label for="ramal" class="form-label">Ramal</label>
+          <input id="ramal" name="ramal" class="form-control" [(ngModel)]="pessoa.ramal" />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input id="email" name="email" class="form-control" [(ngModel)]="pessoa.email" />
+        </div>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="fgOuCc" class="form-label">FG/CC</label>
-      <input id="fgOuCc" name="fgOuCc" class="form-control" [(ngModel)]="pessoa.fgOuCc" />
-    </div>
-    <div class="mb-3">
-      <label for="lotacao" class="form-label">Lotação</label>
-      <input id="lotacao" name="lotacao" class="form-control" [(ngModel)]="pessoa.lotacao" />
-    </div>
-    <div class="mb-3">
-      <label for="ramal" class="form-label">Ramal</label>
-      <input id="ramal" name="ramal" class="form-control" [(ngModel)]="pessoa.ramal" />
-    </div>
-    <div class="mb-3">
-      <label for="email" class="form-label">Email</label>
-      <input id="email" name="email" class="form-control" [(ngModel)]="pessoa.email" />
-    </div>
-    <!-- Campo veiculos omitido do formulário -->
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>

@@ -1,4 +1,4 @@
-<div class="container m-2">
+<div class="m-2">
   <h1>Pessoas</h1>
 <button class="btn btn-success mb-3" (click)="novaPessoa()">Nova Pessoa</button>
 <div class="mb-3">
@@ -27,7 +27,7 @@
       <td>{{ pessoa.id }}</td>
       <td>{{ pessoa.nome }}</td>
       <td>{{ pessoa.numFunc }}</td>
-      <td>{{ pessoa.cargo }}</td>
+      <td>{{ pessoa.cargo || pessoa.fgOuCc }}</td>
       <td>{{ pessoa.lotacao }}</td>
       <td>
         <button class="btn btn-sm btn-primary me-2" (click)="abrirModalEdicao(pessoa)">

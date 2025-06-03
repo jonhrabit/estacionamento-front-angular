@@ -1,1 +1,54 @@
-<p>acessos works!</p>
+<div class="m-2">
+  <h1>Acessos</h1>
+  <button class="btn btn-success mb-3" (click)="novoAcesso()">Novo Acesso</button>
+  <div class="mb-3">
+    <input type="text" class="form-control" placeholder="Filtrar por pessoa/veículo..." [(ngModel)]="filtro" (input)="aplicarFiltro()">
+  </div>
+  <div *ngIf="acessosFiltrados.length === 0">
+    <div class="alert alert-info">Nenhum acesso encontrado.</div>
+  </div>
+  <div class="mb-2 text-end" *ngIf="acessosFiltrados.length > 0">
+    <small>Total de registros: {{ acessosFiltrados.length }}</small>
+  </div>
+  <table class="table table-striped" *ngIf="acessosFiltrados.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Proprietário</th>
+        <th>Veículo</th>
+        <th>Data Entrada</th>
+        <th>Data Saída</th>
+        <th>Observação</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let acesso of acessosPaginados">
+        <td>{{ acesso.id }}</td>
+        <td>{{ acesso.pessoa?.nome }}</td>
+        <td>{{ acesso.veiculo?.placa }}</td>
+        <td>{{ acesso.entrada | date:'short' }}</td>
+        <td>{{ acesso.saida | date:'short'}}</td>
+        <td>{{ acesso.observacao }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary me-2" (click)="abrirModalEdicao(acesso)"><i class="bi bi-pencil"></i></button>
+          <button class="btn btn-sm btn-danger" (click)="excluirAcesso(acesso)"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <nav *ngIf="acessosFiltrados.length > itensPorPagina">
+    <ul class="pagination">
+      <li class="page-item" [class.disabled]="paginaAtual === 1">
+        <button class="page-link" (click)="paginaAtual = paginaAtual - 1" [disabled]="paginaAtual === 1">Anterior</button>
+      </li>
+      <li class="page-item" *ngFor="let pagina of paginasPaginacao" [class.active]="paginaAtual === pagina">
+        <button class="page-link" (click)="paginaAtual = pagina">{{ pagina }}</button>
+      </li>
+      <li class="page-item" [class.disabled]="paginaAtual === totalPaginas">
+        <button class="page-link" (click)="paginaAtual = paginaAtual + 1" [disabled]="paginaAtual === totalPaginas">Próxima</button>
+      </li>
+    </ul>
+  </nav>
+</div>
+
