@@ -52,6 +52,12 @@ export class AuthService {
     const dados = sessionStorage.getItem(this.STORAGE_KEY);
     return dados ? JSON.parse(dados) : null;
   }
+  getToken(): String | null {
+    const dados = sessionStorage.getItem(this.STORAGE_KEY);
+    if(dados==null) return null;
+    const session: AuthSession = JSON.parse(dados);
+    return session.token;
+  }
 
   isLoggedIn(): boolean {
     return !!this.getUsuarioLogado();

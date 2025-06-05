@@ -23,9 +23,16 @@ export class PessoaEditarModalComponent {
     veiculos: []
   };
 
+  errorMsg: string = '';
+
   constructor(public activeModal: NgbActiveModal) {}
 
   salvar() {
+    this.errorMsg = '';
+    if (!this.pessoa.nome || !this.pessoa.email) {
+      this.errorMsg = 'Preencha todos os campos obrigatórios.';
+      return;
+    }
     this.activeModal.close(this.pessoa);
   }
 

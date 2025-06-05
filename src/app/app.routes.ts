@@ -6,6 +6,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { PessoasComponent } from './estacionamento/pessoas/pessoas.component';
 import { VeiculosComponent } from './estacionamento/veiculos/veiculos.component';
 import { AcessosComponent } from './estacionamento/acessos/acessos.component';
+import { FeedBloqueioComponent } from './auth/feed-bloqueio.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -19,4 +20,5 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: 'login', component: LoginComponent },
+  { path: '403', component: FeedBloqueioComponent },
 ];

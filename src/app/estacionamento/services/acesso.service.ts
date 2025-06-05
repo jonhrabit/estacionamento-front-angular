@@ -3,12 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AcessoService {
   private apiUrl = 'acessos/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
@@ -16,6 +16,15 @@ export class AcessoService {
 
   getById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}${id}`);
+  }
+  getSaida(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}saida`);
+  }
+  createByPlaca(placa:String, obs:String): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}entrada/${placa}`,{obs});
+  }
+createById(id:number, obs:String): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}entradaporid/${id}`,{obs});
   }
 
   create(acesso: any): Observable<any> {

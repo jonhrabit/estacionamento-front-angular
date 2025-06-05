@@ -5,6 +5,10 @@
 <form (ngSubmit)="salvar()" #form="ngForm">
   <div class="modal-body">
 
+    <div *ngIf="errorMsg" class="alert alert-danger text-center mb-3">
+      {{ errorMsg }}
+    </div>
+
     <div class='row'>
       <div class='col-md-9'>
         <div class="mb-3">

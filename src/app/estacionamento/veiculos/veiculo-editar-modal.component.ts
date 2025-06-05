@@ -28,6 +28,7 @@ export class VeiculoEditarModalComponent implements OnInit {
   };
 
   pessoas: any[] = [];
+  errorMsg: string = '';
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -56,6 +57,12 @@ export class VeiculoEditarModalComponent implements OnInit {
   formatterPessoa = (pessoa: any) => (pessoa && pessoa.nome ? pessoa.nome : '');
 
   salvar() {
+    this.errorMsg = '';
+    // Exemplo de validação simples
+    if (!this.veiculo.placa || !this.veiculo.modelo) {
+      this.errorMsg = 'Preencha todos os campos obrigatórios.';
+      return;
+    }
     // Salva apenas o id da pessoa selecionada
 
     console.log(this.veiculo);

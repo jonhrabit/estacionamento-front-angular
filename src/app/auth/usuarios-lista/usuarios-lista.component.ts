@@ -1,7 +1,7 @@
 import { ToastService } from './../../shared/toast-global/toast.service';
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../usuario.service';
-import { Usuario } from '../usuario';
+import { Usuario } from '../interfaces/usuario';
 import { CommonModule } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsuarioEditarModalComponent } from '../usuarios-editar-modal/usuario-editar-modal.component';

@@ -1,1 +1,38 @@
-<p>home works!</p>
+<div class="m-2">
+  <div class='row'>
+    <div class='col-md-10'>
+      <app-inputplaca (acessoRegistrado)="addAcesso($event)"></app-inputplaca>
+      <div class="mt-2">
+        <h6>Veículos estacionados</h6>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Veículo</th>
+              <th>Data Entrada</th>
+              <th>Data Saída</th>
+              <th>Observação</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let acesso of acessos">
+              <td>{{ acesso.id }}</td>
+              <td>{{ acesso.veiculo.placa }}</td>
+              <td>{{ acesso.entrada | date:'short' }}</td>
+              <td>{{ acesso.saida | date:'short'}}</td>
+              <td>{{ acesso.observacao }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class='col-md-2'>
+      <app-botao-menu link="/pessoas" icone="bi bi-people-fill" texto="Pessoas"></app-botao-menu>
+      <app-botao-menu link="/veiculos" icone="bi bi-car-front-fill" texto="Veículos"></app-botao-menu>
+      <app-botao-menu link="/acessos" icone="bi bi-building-fill-up" texto="Acessos"></app-botao-menu>
+    </div>
+  </div>
+
+</div>

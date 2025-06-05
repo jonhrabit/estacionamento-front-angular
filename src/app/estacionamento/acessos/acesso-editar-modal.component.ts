@@ -21,6 +21,7 @@ export class AcessoEditarModalComponent implements OnInit {
   };
 
   veiculos: any[] = [];
+  errorMsg: string = '';
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -52,6 +53,11 @@ export class AcessoEditarModalComponent implements OnInit {
     veiculo && veiculo.placa ? veiculo.placa + ' - ' + veiculo.pessoa.nome : '';
 
   salvar() {
+    this.errorMsg = '';
+    if (!this.acesso.veiculo || !this.acesso.entrada) {
+      this.errorMsg = 'Preencha todos os campos obrigatórios.';
+      return;
+    }
     if (this.acesso.entrada) {
       this.acesso.entrada = new Date(this.acesso.entrada);
       this.acesso.entrada = new Date(

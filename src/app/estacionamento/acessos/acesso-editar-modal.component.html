@@ -4,6 +4,9 @@
 </div>
 <form (ngSubmit)="salvar()" #form="ngForm">
   <div class="modal-body">
+    <div *ngIf="errorMsg" class="alert alert-danger text-center mb-3">
+      {{ errorMsg }}
+    </div>
     <div class="mb-3">
       <label for="veiculo" class="form-label">Veículo</label>
       <input id="veiculo" name="veiculo" class="form-control"
