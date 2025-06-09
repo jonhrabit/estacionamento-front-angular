@@ -1,6 +1,4 @@
-import {
-  ToastService
-} from './../shared/toast-global/toast.service';
+import { ToastService } from './../shared/toast-global/toast.service';
 import { Component, Output, EventEmitter } from '@angular/core';
 import { ClockComponent } from '../shared/clock/clock.component';
 import { VeiculoService } from '../estacionamento/services/veiculo.service';
@@ -8,6 +6,7 @@ import { Veiculo } from '../estacionamento/veiculo';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AcessoService } from '../estacionamento/services/acesso.service';
+import { Acesso } from '../estacionamento/acesso';
 
 @Component({
   selector: 'app-inputplaca',
@@ -30,18 +29,22 @@ import { AcessoService } from '../estacionamento/services/acesso.service';
     </div>
     @if (veiculoEncontrado) {
     <div class="alert alert-info mt-4 text-center">
-      <div class='row'>
-        <div class='col-md-6'>
+      <div class="row">
+        <div class="col-md-6">
           Veículo: {{ veiculoEncontrado.placa }} -
           {{ veiculoEncontrado.pessoa.nome }}
         </div>
-        <div class='col-md-6'>
-      <button
-        class="btn btn-success w-100"
-        (click)="registrarAcesso()"
-      >
-        Registrar Acesso
-      </button>
+        <div class="col-md-6">
+          <input
+            type="text"
+            class="form-control mb-2"
+            placeholder="Observação (opcional)"
+            [(ngModel)]="observacao"
+            name="observacao"
+          />
+          <button class="btn btn-success w-100" (click)="registrarAcesso()">
+            Registrar Acesso
+          </button>
         </div>
       </div>
     </div>
@@ -55,6 +58,7 @@ import { AcessoService } from '../estacionamento/services/acesso.service';
 export class InputplacaComponent {
   placa: string = '';
   veiculoEncontrado: Veiculo | null = null;
+  observacao: string = '';
   @Output() acessoRegistrado = new EventEmitter<any>();
 
   constructor(
@@ -85,22 +89,26 @@ export class InputplacaComponent {
       return;
     }
     if (this.veiculoEncontrado) {
-      this.acessoService.createById(this.veiculoEncontrado.id, '').subscribe({
-        next: (data) => {
-          this.toastSevice.show('Acesso registrado com sucesso!', 'success');
-          this.acessoRegistrado.emit(data); // Notifica o componente pai
-          this.placa = '';
-          this.veiculoEncontrado = null;
-        },
-        error: (erro) => {
-          console.error(erro);
-          this.toastSevice.show(
-            'Erro ao registrar acesso. Verifique os dados e tente novamente.',
-            'danger'
-          );
-        },
-        complete: () => {},
-      });
+      this.acessoService
+        .createById(this.veiculoEncontrado.id, this.observacao)
+        .subscribe({
+          next: (data) => {
+            this.toastSevice.show('Acesso registrado com sucesso!', 'success');
+            this.acessoRegistrado.emit(data); // Notifica o componente pai
+            this.placa = '';
+            this.veiculoEncontrado = null;
+            this.observacao = '';
+          },
+          error: (erro) => {
+            console.error(erro);
+            this.toastSevice.show(
+              'Erro ao registrar acesso. Verifique os dados e tente novamente.',
+              'danger'
+            );
+          },
+          complete: () => {},
+        });
     }
   }
+
 }

@@ -20,11 +20,14 @@ export class AcessoService {
   getSaida(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}saida`);
   }
-  createByPlaca(placa:String, obs:String): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}entrada/${placa}`,{obs});
+  setSaida(id:number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}saida/${id}`, '');
   }
-createById(id:number, obs:String): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}entradaporid/${id}`,{obs});
+  createByPlaca(placa: String, obs: String): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}entrada/${placa}`, { obs });
+  }
+  createById(id: number, obs: String): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}entradaporid/${id}`, { obs });
   }
 
   create(acesso: any): Observable<any> {
