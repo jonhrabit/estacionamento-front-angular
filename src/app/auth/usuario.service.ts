@@ -31,13 +31,14 @@ export class UsuarioService {
     return this.http.put<Usuario>(`${this.apiUrl}resetsenha/${id}`,null);
   }
 
-  passwordAlterarUsuario(id: number, novaSenha:String, senha:String): Observable<Usuario> {
-    return this.http.put<Usuario>(`${this.apiUrl}alterarsenha/${id}`, {
-      senhaAtual: senha,
-      novaSenha: novaSenha});
-  }
 
   deleteUsuario(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}${id}`);
+  }
+
+  passwordAlterarUsuario(id: number, novaSenha:String, senha:String): Observable<Usuario> {
+    return this.http.put<Usuario>(`alterarsenha/${id}`, {
+      senhaAtual: senha,
+      novaSenha: novaSenha});
   }
 }

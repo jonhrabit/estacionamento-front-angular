@@ -2,10 +2,22 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { environment } from '../../environment';
 import { AuthService } from '../auth.service';
 import { inject } from '@angular/core';
+import { UsuarioLogadoService } from '../usuario-logado.service';
+import { jwtDecode } from 'jwt-decode';
 
 export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+  const usuarioLogadoService = inject(UsuarioLogadoService);
+  const token = authService.getToken();
 
-  const token = inject(AuthService).getToken();
+  if (token) {
+    try {
+      const decoded: any = jwtDecode(token.toString());
+      usuarioLogadoService.setUsuario(decoded);
+    } catch (e) {
+      // token inválido, não faz nada
+    }
+  }
 
   if (!token) {
     return next(req.clone({url: environment.apiUrl + "/" + req.url}));
@@ -20,6 +32,7 @@ export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
     url: environment.apiUrl + "/" + req.url, // Prepend the base URL from environment
+    
   });
 
   return next(reqClone);

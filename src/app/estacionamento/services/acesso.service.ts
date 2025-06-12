@@ -1,6 +1,8 @@
+import { Veiculo } from './../veiculo';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Acesso } from '../acesso';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +22,7 @@ export class AcessoService {
   getSaida(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}saida`);
   }
-  setSaida(id:number): Observable<any> {
+  setSaida(id: number): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}saida/${id}`, '');
   }
   createByPlaca(placa: String, obs: String): Observable<any> {
@@ -32,10 +34,15 @@ export class AcessoService {
 
   create(acesso: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, acesso);
+    //TODO: Ajustar para put o protocolo
   }
 
-  update(id: number, acesso: any): Observable<any> {
+  update(id: number, acesso: Acesso): Observable<any> {
+    console.log(acesso);
     return this.http.put<any>(`${this.apiUrl}${id}`, acesso);
+  }
+  exportar(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}exportar`,);
   }
 
   delete(id: number): Observable<void> {

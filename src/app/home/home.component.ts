@@ -15,6 +15,9 @@ import { AcessoEditarModalComponent } from '../estacionamento/acessos/acesso-edi
 })
 export class HomeComponent implements OnInit {
   acessos: Acesso[] = [];
+  colunaOrdenacao: string = 'entrada';
+  direcaoOrdenacao: 'asc' | 'desc' = 'desc';
+
   constructor(
     private acessoService: AcessoService,
     private toastSevice: ToastService,
@@ -25,7 +28,7 @@ export class HomeComponent implements OnInit {
     this.acessoService.getSaida().subscribe({
       next: (data) => {
         this.acessos = data;
-        this.ordenarAcessosPorDataDesc();
+        this.ordenarAcessos();
       },
       error: (erro) => {
         console.error(erro);
@@ -36,16 +39,41 @@ export class HomeComponent implements OnInit {
 
   addAcesso(acesso: Acesso): void {
     this.acessos.push(acesso);
-    this.ordenarAcessosPorDataDesc();
+    this.ordenarAcessos();
   }
 
-  ordenarAcessosPorDataDesc() {
-    this.acessos.sort((a, b) => {
-      const dataA = new Date(a.entrada).getTime();
-      const dataB = new Date(b.entrada).getTime();
-      return dataB - dataA;
+  ordenarAcessos() {
+    const col = this.colunaOrdenacao;
+    const dir = this.direcaoOrdenacao === 'asc' ? 1 : -1;
+    this.acessos.sort((a: any, b: any) => {
+      let valA = a[col];
+      let valB = b[col];
+      // Para datas, converte para timestamp
+      if (col === 'entrada' || col === 'saida') {
+        valA = valA ? new Date(valA).getTime() : 0;
+        valB = valB ? new Date(valB).getTime() : 0;
+      }
+      // Para veiculo.placa
+      if (col === 'veiculo') {
+        valA = a.veiculo?.placa || '';
+        valB = b.veiculo?.placa || '';
+      }
+      if (valA < valB) return -1 * dir;
+      if (valA > valB) return 1 * dir;
+      return 0;
     });
   }
+
+  setOrdenacao(coluna: string) {
+    if (this.colunaOrdenacao === coluna) {
+      this.direcaoOrdenacao = this.direcaoOrdenacao === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.colunaOrdenacao = coluna;
+      this.direcaoOrdenacao = 'asc';
+    }
+    this.ordenarAcessos();
+  }
+
   registrarSaida(acesso: Acesso) {
     if (!acesso || !acesso.id) {
       this.toastSevice.show(
@@ -57,6 +85,7 @@ export class HomeComponent implements OnInit {
     this.acessoService.setSaida(acesso.id).subscribe({
       next: (data) => {
         this.toastSevice.show('Saída registrada com sucesso!', 'success');
+        this.ngOnInit()
       },
       error: (erro) => {
         console.error(erro);

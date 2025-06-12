@@ -7,6 +7,9 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AcessoService } from '../estacionamento/services/acesso.service';
 import { Acesso } from '../estacionamento/acesso';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CadastroEditarModalComponent } from '../estacionamento/cadastros/cadastro-editar-modal.component';
+import { CadastroService } from '../estacionamento/services/cadastro.service';
 
 @Component({
   selector: 'app-inputplaca',
@@ -17,8 +20,8 @@ import { Acesso } from '../estacionamento/acesso';
         <input
           type="text"
           name="placa-acesso"
-          class="form-control w-100 text-center"
-          placeholder="Registrar entrada-> Placa do veículo"
+          class="form-control w-100 text-center fs-1"
+          placeholder="Placa"
           [(ngModel)]="placa"
           (input)="buscarVeiculo()"
         />
@@ -30,9 +33,12 @@ import { Acesso } from '../estacionamento/acesso';
     @if (veiculoEncontrado) {
     <div class="alert alert-info mt-4 text-center">
       <div class="row">
-        <div class="col-md-6">
-          Veículo: {{ veiculoEncontrado.placa }} -
-          {{ veiculoEncontrado.pessoa.nome }}
+        <div class="col-md-6 fs-3">
+          Placa <b>{{ veiculoEncontrado.placa }}</b
+          ><br />
+          {{ veiculoEncontrado.pessoa.nome }}<br />
+          {{ veiculoEncontrado.pessoa.cargo }} <br />
+          {{ veiculoEncontrado.pessoa.lotacao }}
         </div>
         <div class="col-md-6">
           <input
@@ -50,7 +56,23 @@ import { Acesso } from '../estacionamento/acesso';
     </div>
     }@else{ @if (placa.length == 7) {
     <div class="alert alert-danger mt-4 text-center">
-      Veiculo: {{ placa }} - não Localizado.
+      <div class="row">
+        <div class="col-md-6 fs-4">
+          <div class="row">
+            <div class="col-md-4">
+            <img src="assets/img/abort.png" alt="negado" style="max-width: 64px; max-height: 64px;" />
+            </div>
+            <div class="col-md-8">
+              Placa {{ placa }}<br /><b>Não</b> Localizada
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <button class="btn btn-danger w-100 h-100" (click)="cadastrar()">
+            Cadastrar Veículo
+          </button>
+        </div>
+      </div>
     </div>
     } }
   `,
@@ -64,7 +86,9 @@ export class InputplacaComponent {
   constructor(
     private veiculoService: VeiculoService,
     private acessoService: AcessoService,
-    private toastSevice: ToastService
+    private toastSevice: ToastService,
+    private modalService: NgbModal,
+    private cadastroService: CadastroService
   ) {}
 
   buscarVeiculo() {
@@ -111,4 +135,57 @@ export class InputplacaComponent {
     }
   }
 
+  cadastrar() {
+    const modalRef = this.modalService.open(CadastroEditarModalComponent, {
+      size: 'lg',
+    });
+    modalRef.componentInstance.cadastro = {
+      idPessoa: 0,
+      nome: '',
+      numFunc: '',
+      tipoVinculo: '',
+      cargo: '',
+      fgOuCc: '',
+      lotacao: '',
+      ramal: '',
+      email: '',
+      placa: this.placa,
+      modelo: '',
+      cor: '',
+      foto: '',
+      temporario: false,
+      dataLimite: null,
+    };
+    modalRef.result.then(
+      (result) => {
+        if (result) {
+          this.cadastroService.create(result).subscribe({
+            next: (data) => {
+              this.toastSevice.show(
+                'Cadastro realizado com sucesso!',
+                'success'
+              ),
+                this.acessoRegistrado.emit(data); // Notifica o componente pai
+              this.placa = '';
+              this.veiculoEncontrado = null;
+              this.observacao = '';
+            },
+
+            error: (error) => {
+              console.error(error);
+              this.toastSevice.show(
+                'Erro ao cadastrar:\n' + error.message,
+                'danger'
+              );
+            },
+            complete: () => {},
+          });
+
+          //this.toastSevice.show('Cadastro realizado com sucesso!', 'success');
+          this.placa = '';
+        }
+      },
+      () => {}
+    );
+  }
 }

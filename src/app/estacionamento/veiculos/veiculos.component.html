@@ -10,12 +10,13 @@
 <table class="table table-striped" *ngIf="veiculosFiltrados.length > 0">
   <thead>
     <tr>
-      <th></th>
-      <th>Placa</th>
-      <th>Modelo</th>
-      <th>Cor</th>
-      <th>Proprietário</th>
-      <th>Cargo</th><th>Lotação</th>
+      <th (click)="ordenarPor('id')" style="cursor:pointer">ID <span *ngIf="colunaOrdenacao==='id'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+      <th (click)="ordenarPor('placa')" style="cursor:pointer">Placa <span *ngIf="colunaOrdenacao==='placa'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+      <th (click)="ordenarPor('modelo')" style="cursor:pointer">Modelo <span *ngIf="colunaOrdenacao==='modelo'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+      <th (click)="ordenarPor('cor')" style="cursor:pointer">Cor <span *ngIf="colunaOrdenacao==='cor'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+      <th (click)="ordenarPor('proprietario')" style="cursor:pointer">Proprietário <span *ngIf="colunaOrdenacao==='proprietario'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+      <th (click)="ordenarPor('cargo')" style="cursor:pointer">Cargo <span *ngIf="colunaOrdenacao==='cargo'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+      <th (click)="ordenarPor('lotacao')" style="cursor:pointer">Lotação <span *ngIf="colunaOrdenacao==='lotacao'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
       <th>Ações</th>
     </tr>
   </thead>

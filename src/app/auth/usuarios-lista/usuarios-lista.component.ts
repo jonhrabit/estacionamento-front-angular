@@ -15,16 +15,21 @@ export class UsuariosListaComponent implements OnInit {
   usuarios: Usuario[] = [];
   loading = false;
   error = '';
+  colunaOrdenacao: string = 'id';
+  direcaoOrdenacao: 'asc' | 'desc' = 'asc';
 
   constructor(private usuarioService: UsuarioService, private modalService: NgbModal, private toast:ToastService) { }
 
   ngOnInit(): void {
+    this.carregarUsuarios();
+  }
+
+  carregarUsuarios() {
     this.loading = true;
     this.usuarioService.getUsuarios().subscribe({
       next: (data) => {
         this.usuarios = data;
-        console.log('Usuários carregados:', this.usuarios);
-
+        this.ordenarUsuarios();
         this.loading = false;
       },
       error: (err) => {
@@ -116,5 +121,31 @@ export class UsuariosListaComponent implements OnInit {
         });
       }
     }
+  }
+
+  ordenarUsuarios() {
+    const col = this.colunaOrdenacao;
+    const dir = this.direcaoOrdenacao === 'asc' ? 1 : -1;
+    this.usuarios.sort((a: any, b: any) => {
+      let valA = a[col];
+      let valB = b[col];
+      if (col === 'cadastro') {
+        valA = valA ? new Date(valA).getTime() : 0;
+        valB = valB ? new Date(valB).getTime() : 0;
+      }
+      if (valA < valB) return -1 * dir;
+      if (valA > valB) return 1 * dir;
+      return 0;
+    });
+  }
+
+  setOrdenacao(coluna: string) {
+    if (this.colunaOrdenacao === coluna) {
+      this.direcaoOrdenacao = this.direcaoOrdenacao === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.colunaOrdenacao = coluna;
+      this.direcaoOrdenacao = 'asc';
+    }
+    this.ordenarUsuarios();
   }
 }

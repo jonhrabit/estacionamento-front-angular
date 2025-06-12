@@ -7,10 +7,26 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Veículo</th>
-              <th>Data Entrada</th>
-              <th>Data Saída</th>
+              <th (click)="setOrdenacao('id')" style="cursor:pointer">ID
+                <span *ngIf="colunaOrdenacao==='id'">
+                  <i [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
+                </span>
+              </th>
+              <th (click)="setOrdenacao('veiculo')" style="cursor:pointer">Veículo
+                <span *ngIf="colunaOrdenacao==='veiculo'">
+                  <i [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
+                </span>
+              </th>
+              <th (click)="setOrdenacao('entrada')" style="cursor:pointer">Data Entrada
+                <span *ngIf="colunaOrdenacao==='entrada'">
+                  <i [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
+                </span>
+              </th>
+              <th (click)="setOrdenacao('saida')" style="cursor:pointer">Data Saída
+                <span *ngIf="colunaOrdenacao==='saida'">
+                  <i [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
+                </span>
+              </th>
               <th>Observação</th>
               <th>Ações</th>
             </tr>

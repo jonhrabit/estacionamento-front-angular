@@ -29,7 +29,7 @@ export class PessoaEditarModalComponent {
 
   salvar() {
     this.errorMsg = '';
-    if (!this.pessoa.nome || !this.pessoa.email) {
+    if (!this.pessoa.nome || !this.pessoa.tipoVinculo) {
       this.errorMsg = 'Preencha todos os campos obrigatórios.';
       return;
     }

@@ -1,15 +1,41 @@
+<div class="m-2">
+<h2>Lista de Usuários</h2>
 <button class="btn btn-success mb-3" (click)="novoUsuario()">Novo Usuário</button>
 <div *ngIf="loading">Carregando usuários...</div>
 <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 <table class="table table-striped" *ngIf="!loading && usuarios.length">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Nome</th>
-      <th>Username</th>
-      <th>Email</th>
-      <th>CPF</th>
-      <th>Cadastro</th>
+      <th (click)="setOrdenacao('id')" style="cursor:pointer">ID
+        <span *ngIf="colunaOrdenacao==='id'">
+          <i [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
+        </span>
+      </th>
+      <th (click)="setOrdenacao('nome')" style="cursor:pointer">Nome
+        <span *ngIf="colunaOrdenacao==='nome'">
+          <i [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
+        </span>
+      </th>
+      <th (click)="setOrdenacao('username')" style="cursor:pointer">Username
+        <span *ngIf="colunaOrdenacao==='username'">
+          <i [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
+        </span>
+      </th>
+      <th (click)="setOrdenacao('email')" style="cursor:pointer">Email
+        <span *ngIf="colunaOrdenacao==='email'">
+          <i [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
+        </span>
+      </th>
+      <th (click)="setOrdenacao('cpf')" style="cursor:pointer">CPF
+        <span *ngIf="colunaOrdenacao==='cpf'">
+          <i [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
+        </span>
+      </th>
+      <th (click)="setOrdenacao('cadastro')" style="cursor:pointer">Cadastro
+        <span *ngIf="colunaOrdenacao==='cadastro'">
+          <i [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
+        </span>
+      </th>
       <th>Ações</th>
     </tr>
   </thead>
@@ -22,11 +48,12 @@
       <td>{{ usuario.cpf }}</td>
       <td>{{ usuario.cadastro | date:'short' }}</td>
       <td>
-        <button class="btn btn-sm btn-primary me-2" (click)="abrirModalEdicao(usuario)">Editar</button>
-        <button class="btn btn-sm btn-danger me-2" (click)="excluirUsuario(usuario)">Excluir</button>
-        <button class="btn btn-sm btn-warning" (click)="resetarSenhaUsuario(usuario)">Resetar Senha</button>
+        <button class="btn btn-sm btn-primary me-2" (click)="abrirModalEdicao(usuario)"><i class="bi bi-pencil"></i></button>
+        <button class="btn btn-sm btn-primary me-2" (click)="resetarSenhaUsuario(usuario)"><i class="bi bi-arrow-counterclockwise"></i></button>
+        <button class="btn btn-sm btn-danger" (click)="excluirUsuario(usuario)"><i class="bi bi-trash"></i></button>
       </td>
     </tr>
   </tbody>
 </table>
 <div *ngIf="!loading && !usuarios.length">Nenhum usuário encontrado.</div>
+</div>

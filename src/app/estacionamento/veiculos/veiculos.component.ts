@@ -16,6 +16,8 @@ export class VeiculosComponent implements OnInit {
   filtro: string = '';
   paginaAtual = 1;
   itensPorPagina = 10;
+  colunaOrdenacao: string = '';
+  direcaoOrdenacao: 'asc' | 'desc' = 'asc';
 
   constructor(private veiculoService: VeiculoService, private modalService: NgbModal) {}
 
@@ -36,6 +38,65 @@ export class VeiculosComponent implements OnInit {
       v.modelo.toLowerCase().includes(this.filtro.toLowerCase())
     );
     this.paginaAtual = 1;
+    if (this.colunaOrdenacao) {
+      this.ordenarVeiculos();
+    }
+  }
+
+  ordenarPor(coluna: string) {
+    if (this.colunaOrdenacao === coluna) {
+      this.direcaoOrdenacao = this.direcaoOrdenacao === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.colunaOrdenacao = coluna;
+      this.direcaoOrdenacao = 'asc';
+    }
+    this.ordenarVeiculos();
+  }
+
+  ordenarVeiculos() {
+    this.veiculosFiltrados.sort((a, b) => {
+      let valorA, valorB;
+      switch (this.colunaOrdenacao) {
+        case 'id':
+          valorA = a.id;
+          valorB = b.id;
+          break;
+        case 'placa':
+          valorA = a.placa || '';
+          valorB = b.placa || '';
+          break;
+        case 'modelo':
+          valorA = a.modelo || '';
+          valorB = b.modelo || '';
+          break;
+        case 'cor':
+          valorA = a.cor || '';
+          valorB = b.cor || '';
+          break;
+        case 'proprietario':
+          valorA = a.pessoa?.nome || '';
+          valorB = b.pessoa?.nome || '';
+          break;
+        case 'cargo':
+          valorA = a.pessoa?.cargo || '';
+          valorB = b.pessoa?.cargo || '';
+          break;
+        case 'lotacao':
+          valorA = a.pessoa?.lotacao || '';
+          valorB = b.pessoa?.lotacao || '';
+          break;
+        default:
+          valorA = '';
+          valorB = '';
+      }
+      if (valorA == null) valorA = '';
+      if (valorB == null) valorB = '';
+      if (this.direcaoOrdenacao === 'asc') {
+        return valorA > valorB ? 1 : valorA < valorB ? -1 : 0;
+      } else {
+        return valorA < valorB ? 1 : valorA > valorB ? -1 : 0;
+      }
+    });
   }
 
   get veiculosPaginados() {

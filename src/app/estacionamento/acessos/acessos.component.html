@@ -1,6 +1,7 @@
 <div class="m-2">
   <h1>Acessos</h1>
   <button class="btn btn-success mb-3" (click)="novoAcesso()">Novo Acesso</button>
+  <button class="btn btn-success mb-3 mr-3" (click)="exportarDados()">Exportar dados...</button>
   <div class="mb-3">
     <input type="text" class="form-control" placeholder="Filtrar por pessoa/veículo..." [(ngModel)]="filtro" (input)="aplicarFiltro()">
   </div>
@@ -13,19 +14,19 @@
   <table class="table table-striped" *ngIf="acessosFiltrados.length > 0">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Proprietário</th>
-        <th>Veículo</th>
-        <th>Data Entrada</th>
-        <th>Data Saída</th>
-        <th>Observação</th>
+        <th (click)="ordenarPor('id')" style="cursor:pointer">ID <span *ngIf="colunaOrdenacao==='id'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+        <th (click)="ordenarPor('proprietario')" style="cursor:pointer">Proprietário <span *ngIf="colunaOrdenacao==='proprietario'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+        <th (click)="ordenarPor('placa')" style="cursor:pointer">Veículo <span *ngIf="colunaOrdenacao==='placa'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+        <th (click)="ordenarPor('entrada')" style="cursor:pointer">Data Entrada <span *ngIf="colunaOrdenacao==='entrada'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+        <th (click)="ordenarPor('saida')" style="cursor:pointer">Data Saída <span *ngIf="colunaOrdenacao==='saida'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+        <th (click)="ordenarPor('observacao')" style="cursor:pointer">Observação <span *ngIf="colunaOrdenacao==='observacao'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
         <th>Ações</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let acesso of acessosPaginados">
         <td>{{ acesso.id }}</td>
-        <td>{{ acesso.pessoa?.nome }}</td>
+        <td>{{ acesso.veiculo?.pessoa.nome }}</td>
         <td>{{ acesso.veiculo?.placa }}</td>
         <td>{{ acesso.entrada | date:'short' }}</td>
         <td>{{ acesso.saida | date:'short'}}</td>
