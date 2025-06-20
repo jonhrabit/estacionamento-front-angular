@@ -10,15 +10,18 @@ import './acessos-relatorio-print.component.css';
   imports: [CommonModule],
   template: `
     <div class="container mt-4">
-      <h3 class="mb-4">Acessos ao Estacionamento</h3>
+      <div class="fs-4 text">Acessos ao Estacionamento</div>
       @if (filtroKeys.length > 0) {
       <div class="mb-3">
-        <strong>Filtros aplicados:</strong>
         <ul>
-          <li *ngFor="let key of filtroKeys" class="mb-1" style="font-size: 0.95em;">
-            <strong>{{ filtroLabels[key] || key }}:</strong>
+          <li
+            *ngFor="let key of filtroKeys"
+            class="mb-1"
+            style="font-size: 0.95em;"
+          >
+            <strong>{{ filtroLabels[key] || key }}: </strong>
             <ng-container *ngIf="isDateFiltro(key); else textoFiltro">
-              {{ filtros[key] | date:'short' }}
+              {{ filtros[key] | date : 'short' }}
             </ng-container>
             <ng-template #textoFiltro>{{ filtros[key] }}</ng-template>
           </li>
@@ -72,7 +75,7 @@ export class AcessosRelatorioPrintComponent implements OnInit {
     proprietario: 'Proprietário',
     tipoVinculo: 'Tipo de Vínculo',
     cargo: 'Cargo',
-    lotacao: 'Lotação'
+    lotacao: 'Lotação',
   };
 
   constructor(
@@ -89,19 +92,93 @@ export class AcessosRelatorioPrintComponent implements OnInit {
           this.filtros[k] !== null &&
           this.filtros[k] !== undefined
       );
-    });
-    this.acessoService.getAll().subscribe((data) => {
-      this.acessos = data;
-      setTimeout(() => window.print(), 500);
+      this.acessoService.getAll().subscribe((data) => {
+        this.acessos = data.filter((a: any) => this.aplicaFiltros(a));
+        setTimeout(() => window.print(), 500);
+      });
     });
   }
 
+  aplicaFiltros(a: any): boolean {
+    const matchId = !this.filtros.id || String(a.id).includes(this.filtros.id);
+    const matchObs =
+      !this.filtros.observacao ||
+      (a.observacao &&
+        a.observacao
+          .toLowerCase()
+          .includes(this.filtros.observacao.toLowerCase()));
+    const matchPlaca =
+      !this.filtros.placa ||
+      (a.veiculo?.placa &&
+        a.veiculo.placa
+          .toLowerCase()
+          .includes(this.filtros.placa.toLowerCase()));
+    const matchProprietario =
+      !this.filtros.proprietario ||
+      (a.veiculo?.pessoa?.nome &&
+        a.veiculo.pessoa.nome
+          .toLowerCase()
+          .includes(this.filtros.proprietario.toLowerCase()));
+    const matchTipoVinculo =
+      !this.filtros.tipoVinculo ||
+      (a.veiculo?.pessoa?.tipoVinculo &&
+        a.veiculo.pessoa.tipoVinculo
+          .toLowerCase()
+          .includes(this.filtros.tipoVinculo.toLowerCase()));
+    const matchCargo =
+      !this.filtros.cargo ||
+      (a.veiculo?.pessoa?.cargo &&
+        a.veiculo.pessoa.cargo
+          .toLowerCase()
+          .includes(this.filtros.cargo.toLowerCase()));
+    const matchLotacao =
+      !this.filtros.lotacao ||
+      (a.veiculo?.pessoa?.lotacao &&
+        a.veiculo.pessoa.lotacao
+          .toLowerCase()
+          .includes(this.filtros.lotacao.toLowerCase()));
+    let matchEntrada = true;
+    if (this.filtros.entrada_inicio) {
+      const entradaA = a.entrada ? new Date(a.entrada).getTime() : null;
+      const inicio = new Date(this.filtros.entrada_inicio).getTime();
+      matchEntrada = entradaA !== null && entradaA >= inicio;
+    }
+    if (matchEntrada && this.filtros.entrada_fim) {
+      const entradaA = a.entrada ? new Date(a.entrada).getTime() : null;
+      const fim = new Date(this.filtros.entrada_fim).getTime();
+      matchEntrada = entradaA !== null && entradaA <= fim;
+    }
+    let matchSaida = true;
+    if (this.filtros.saida_inicio) {
+      const saidaA = a.saida ? new Date(a.saida).getTime() : null;
+      const inicio = new Date(this.filtros.saida_inicio).getTime();
+      matchSaida = saidaA !== null && saidaA >= inicio;
+    }
+    if (matchSaida && this.filtros.saida_fim) {
+      const saidaA = a.saida ? new Date(a.saida).getTime() : null;
+      const fim = new Date(this.filtros.saida_fim).getTime();
+      matchSaida = saidaA !== null && saidaA <= fim;
+    }
+    return (
+      matchId &&
+      matchObs &&
+      matchPlaca &&
+      matchProprietario &&
+      matchTipoVinculo &&
+      matchCargo &&
+      matchLotacao &&
+      matchEntrada &&
+      matchSaida
+    );
+  }
+
   isDateFiltro(key: string): boolean {
-    return [
-      'entrada_inicio',
-      'entrada_fim',
-      'saida_inicio',
-      'saida_fim'
-    ].includes(key) && this.filtros[key] && !isNaN(Date.parse(this.filtros[key]));
+    return (
+      ['entrada_inicio', 'entrada_fim', 'saida_inicio', 'saida_fim'].includes(
+        key
+      ) &&
+      this.filtros[key] &&
+      !isNaN(Date.parse(this.filtros[key]))
+    );
   }
 }

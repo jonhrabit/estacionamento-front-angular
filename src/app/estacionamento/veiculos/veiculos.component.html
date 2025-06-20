@@ -1,8 +1,8 @@
 <div class="m-2">
-<h1>Veiculos</h1>
+<h1>Veículos</h1>
 <button class="btn btn-success mb-3" (click)="novoVeiculo()">Novo Veículo</button>
 <div class="mb-3">
-  <input type="text" class="form-control" placeholder="Filtrar por placa/modelo..." [(ngModel)]="filtro" (input)="aplicarFiltro()">
+  <input type="text" class="form-control" placeholder="Filtrar por placa, modelo, proprietário, cargo ou lotação..." [(ngModel)]="filtro" (input)="aplicarFiltro()">
 </div>
 <div *ngIf="veiculosFiltrados.length === 0">
   <div class="alert alert-info">Nenhum veículo encontrado.</div>

@@ -15,11 +15,9 @@ import { DatePipe } from '@angular/common';
 export class ClockComponent implements OnDestroy, OnInit {
   time = new Date();
   @Input() containerClass: string =
-    'rounded bg-dark text-white m-2 text-center';
-  @Input() dataClass: string =
-    'fs-4';
-  @Input() horaClass: string =
-    'display-2';
+    'rounded bg-secondary text-white m-2 text-center';
+  @Input() dataClass: string = 'fs-4';
+  @Input() horaClass: string = 'display-2';
 
   observable1 = interval(1000);
   subscripition: any;

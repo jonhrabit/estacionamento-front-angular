@@ -21,7 +21,7 @@ import { CadastroService } from '../estacionamento/services/cadastro.service';
           type="text"
           name="placa-acesso"
           class="form-control w-100 text-center fs-1"
-          placeholder="Placa"
+          placeholder="placa"
           [(ngModel)]="placa"
           (input)="buscarVeiculo()"
         />

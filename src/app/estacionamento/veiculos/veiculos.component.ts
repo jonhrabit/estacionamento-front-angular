@@ -14,6 +14,9 @@ export class VeiculosComponent implements OnInit {
   veiculos: any[] = [];
   veiculosFiltrados: any[] = [];
   filtro: string = '';
+  filtroProprietario: string = '';
+  filtroCargo: string = '';
+  filtroLotacao: string = '';
   paginaAtual = 1;
   itensPorPagina = 10;
   colunaOrdenacao: string = '';
@@ -33,9 +36,13 @@ export class VeiculosComponent implements OnInit {
   }
 
   aplicarFiltro() {
+    const termo = this.filtro.toLowerCase();
     this.veiculosFiltrados = this.veiculos.filter(v =>
-      v.placa.toLowerCase().includes(this.filtro.toLowerCase()) ||
-      v.modelo.toLowerCase().includes(this.filtro.toLowerCase())
+      v.placa.toLowerCase().includes(termo) ||
+      v.modelo.toLowerCase().includes(termo) ||
+      (v.pessoa?.nome && v.pessoa.nome.toLowerCase().includes(termo)) ||
+      (v.pessoa?.cargo && v.pessoa.cargo.toLowerCase().includes(termo)) ||
+      (v.pessoa?.lotacao && v.pessoa.lotacao.toLowerCase().includes(termo))
     );
     this.paginaAtual = 1;
     if (this.colunaOrdenacao) {
