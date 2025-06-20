@@ -65,7 +65,7 @@ export class VeiculoEditarModalComponent implements OnInit {
     }
     // Salva apenas o id da pessoa selecionada
 
-    console.log(this.veiculo);
+    (this.veiculo);
     this.activeModal.close(this.veiculo);
   }
 

@@ -1,56 +1,116 @@
 <div class="m-2">
   <h1>Pessoas</h1>
-  <button class="btn btn-success mb-3" (click)="novaPessoa()">Nova Pessoa</button>
-  <div class="mb-3">
-    <input type="text" class="form-control" placeholder="Filtrar por nome..." [(ngModel)]="filtro"
-      (input)="aplicarFiltro()">
+  <app-spin [show]="loading" [size]="48"></app-spin>
+  <div *ngIf="!loading">
+    <button class="btn btn-success mb-3" (click)="novaPessoa()">Nova Pessoa</button>
+    <div ngbAccordion>
+      <div ngbAccordionItem [collapsed]="true">
+        <h2 ngbAccordionHeader>
+          <button ngbAccordionButton>Filtro</button>
+        </h2>
+        <div ngbAccordionCollapse>
+          <div ngbAccordionBody>
+            <ng-template>
+              <div class="row mb-2">
+                <div class="col-md-4">
+                  <input type="text" class="form-control" placeholder="Nome" [(ngModel)]="filtroPessoa.nome"
+                    (input)="aplicarFiltroAvancado()">
+                </div>
+                <div class="col-md-2">
+                  <input type="text" class="form-control" placeholder="Id" [(ngModel)]="filtroPessoa.numFunc"
+                    (input)="aplicarFiltroAvancado()">
+                </div>
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="Cargo" [(ngModel)]="filtroPessoa.cargo"
+                    (input)="aplicarFiltroAvancado()">
+                </div>
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="Lotação" [(ngModel)]="filtroPessoa.lotacao"
+                    (input)="aplicarFiltroAvancado()">
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-md-2">
+                    <select id="tipoVinculo" name="tipoVinculo" class="form-control" [(ngModel)]="filtroPessoa.tipoVinculo"  (change)="aplicarFiltroAvancado()">
+                      <option value="">Vinculo</option>
+                      <option value="EFETIVO">EFETIVO</option>
+                      <option value="COMISSIONADO">COMISSIONADO</option>
+                      <option value="JURADO">JURADO</option>
+                      <option value="TERCEIRIZADO">TERCEIRIZADO</option>
+                      <option value="PROMOTOR">PROMOTOR</option>
+                      <option value="DEFENSOR">DEFENSOR</option>
+                      <option value="OUTROS">OUTROS</option> </select>
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="FG ou CC" [(ngModel)]="filtroPessoa.fgOuCc"
+                    (input)="aplicarFiltroAvancado()">
+                </div>
+                <div class="col-md-2">
+                  <input type="text" class="form-control" placeholder="Email" [(ngModel)]="filtroPessoa.email"
+                    (input)="aplicarFiltroAvancado()">
+                </div>
+                <div class="col-md-2">
+                  <input type="text" class="form-control" placeholder="Ramal" [(ngModel)]="filtroPessoa.ramal"
+                    (input)="aplicarFiltroAvancado()">
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div *ngIf="pessoasFiltradas.length === 0">
+      <div class="alert alert-info">Nenhuma pessoa encontrada.</div>
+    </div>
+    <div class="mb-2 text-end" *ngIf="pessoasFiltradas.length > 0">
+      <small>Total de registros: {{ pessoasFiltradas.length }}</small>
+    </div>
+    <table class="table table-striped" *ngIf="pessoasFiltradas.length > 0">
+      <thead>
+        <tr>
+          <th (click)="ordenarPor('nome')" style="cursor:pointer">Nome <span *ngIf="colunaOrdenacao==='nome'">{{
+              direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+          <th (click)="ordenarPor('numFunc')" style="cursor:pointer">Id <span
+              *ngIf="colunaOrdenacao==='numFunc'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+          <th (click)="ordenarPor('cargo')" style="cursor:pointer">Cargo <span *ngIf="colunaOrdenacao==='cargo'">{{
+              direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+          <th (click)="ordenarPor('lotacao')" style="cursor:pointer">Lotação <span
+              *ngIf="colunaOrdenacao==='lotacao'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pessoa of pessoasPaginadas">
+          <td>{{ pessoa.nome }}</td>
+          <td>{{ pessoa.numFunc }}</td>
+          <td>{{ pessoa.cargo || pessoa.fgOuCc }}</td>
+          <td>{{ pessoa.lotacao }}</td>
+          <td>
+            <button class="btn btn-sm btn-primary me-2" (click)="abrirModalEdicao(pessoa)">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="excluirPessoa(pessoa)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <nav *ngIf="pessoasFiltradas.length > itensPorPagina">
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="paginaAtual === 1">
+          <button class="page-link" (click)="paginaAtual = paginaAtual - 1"
+            [disabled]="paginaAtual === 1">Anterior</button>
+        </li>
+        <li class="page-item" *ngFor="let pagina of paginasPaginacao" [class.active]="paginaAtual === pagina">
+          <button class="page-link" (click)="paginaAtual = pagina">{{ pagina }}</button>
+        </li>
+        <li class="page-item" [class.disabled]="paginaAtual === totalPaginas">
+          <button class="page-link" (click)="paginaAtual = paginaAtual + 1"
+            [disabled]="paginaAtual === totalPaginas">Próxima</button>
+        </li>
+      </ul>
+    </nav>
   </div>
-  <div *ngIf="pessoasFiltradas.length === 0">
-    <div class="alert alert-info">Nenhuma pessoa encontrada.</div>
-  </div>
-  <div class="mb-2 text-end" *ngIf="pessoasFiltradas.length > 0">
-    <small>Total de registros: {{ pessoasFiltradas.length }}</small>
-  </div>
-  <table class="table table-striped" *ngIf="pessoasFiltradas.length > 0">
-    <thead>
-      <tr>
-        <th (click)="ordenarPor('id')" style="cursor:pointer">ID <span *ngIf="colunaOrdenacao==='id'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
-        <th (click)="ordenarPor('nome')" style="cursor:pointer">Nome <span *ngIf="colunaOrdenacao==='nome'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
-        <th (click)="ordenarPor('numFunc')" style="cursor:pointer">NumFunc <span *ngIf="colunaOrdenacao==='numFunc'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
-        <th (click)="ordenarPor('cargo')" style="cursor:pointer">Cargo <span *ngIf="colunaOrdenacao==='cargo'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
-        <th (click)="ordenarPor('lotacao')" style="cursor:pointer">Lotação <span *ngIf="colunaOrdenacao==='lotacao'">{{ direcaoOrdenacao==='asc' ? '▲' : '▼' }}</span></th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let pessoa of pessoasPaginadas">
-        <td>{{ pessoa.id }}</td>
-        <td>{{ pessoa.nome }}</td>
-        <td>{{ pessoa.numFunc }}</td>
-        <td>{{ pessoa.cargo || pessoa.fgOuCc }}</td>
-        <td>{{ pessoa.lotacao }}</td>
-        <td>
-          <button class="btn btn-sm btn-primary me-2" (click)="abrirModalEdicao(pessoa)">
-            <i class="bi bi-pencil"></i>
-          </button>
-          <button class="btn btn-sm btn-danger" (click)="excluirPessoa(pessoa)">
-            <i class="bi bi-trash"></i>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <nav *ngIf="pessoasFiltradas.length > itensPorPagina">
-    <ul class="pagination">
-      <li class="page-item" [class.disabled]="paginaAtual === 1">
-        <button class="page-link" (click)="paginaAtual = paginaAtual - 1" [disabled]="paginaAtual === 1">Anterior</button>
-      </li>
-      <li class="page-item" *ngFor="let pagina of paginasPaginacao" [class.active]="paginaAtual === pagina">
-        <button class="page-link" (click)="paginaAtual = pagina">{{ pagina }}</button>
-      </li>
-      <li class="page-item" [class.disabled]="paginaAtual === totalPaginas">
-        <button class="page-link" (click)="paginaAtual = paginaAtual + 1" [disabled]="paginaAtual === totalPaginas">Próxima</button>
-      </li>
-    </ul>
-  </nav>
-</div>

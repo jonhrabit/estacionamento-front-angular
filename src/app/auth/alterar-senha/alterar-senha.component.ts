@@ -63,7 +63,6 @@ export class AlterarSenhaComponent {
           },
         });
 
-      console.log('Enviando alteração de senha:', senhaAtual, novaSenha);
       this.activeModal.close();
     }
   }

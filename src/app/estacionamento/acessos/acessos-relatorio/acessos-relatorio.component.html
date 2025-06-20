@@ -1,0 +1,106 @@
+<div class="m-2">
+  <h1>Relatório de Acessos</h1>
+  <div class="card mb-3">
+    <div class="card-header">Pesquisa</div>
+    <div class="card-body">
+      <form class="row g-2">
+        <div class="row m-2">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Entrada de</label>
+              <input type="datetime-local" class="form-control" placeholder="Entrada início"
+                [(ngModel)]="filtroAcesso.entrada_inicio" name="entrada_inicio">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>até</label>
+              <input type="datetime-local" class="form-control" placeholder="Entrada fim"
+                [(ngModel)]="filtroAcesso.entrada_fim" name="entrada_fim">
+
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Saída de</label>
+              <input type="datetime-local" class="form-control" placeholder="Saída"
+                [(ngModel)]="filtroAcesso.saida_inicio" name="saida_inicio">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>até</label>
+              <input type="datetime-local" class="form-control" placeholder="Saída" [(ngModel)]="filtroAcesso.saida_fim"
+                name="saida_fim">
+
+            </div>
+          </div>
+
+
+
+        </div>
+        <div class="row m-2">
+          <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Proprietário" [(ngModel)]="filtroAcesso.proprietario"
+              name="proprietario">
+          </div>
+
+          <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Placa" [(ngModel)]="filtroAcesso.placa" name="placa">
+          </div>
+
+          <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Tipo Vínculo" [(ngModel)]="filtroAcesso.tipoVinculo"
+              name="tipoVinculo">
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Cargo" [(ngModel)]="filtroAcesso.cargo" name="cargo">
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Lotação" [(ngModel)]="filtroAcesso.lotacao"
+              name="lotacao">
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Observação" [(ngModel)]="filtroAcesso.observacao"
+              name="observacao">
+          </div>
+        </div>
+        <div class="row m-2">
+          <div class="col">
+            <button type="button" class="btn btn-secondary" (click)="consultarAcessos()">Limpar</button>
+            <button type="button" class="btn btn-primary m-1" (click)="consultarAcessos()">Consultar</button>
+            <button type="button" class="btn btn-primary" (click)="imprimirRelatorio()">Imprimir</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <div class="resultado">
+
+    <table class="table table-sm" *ngIf="acessos.length > 0">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Proprietário</th>
+          <th>Veículo</th>
+          <th>Data Entrada</th>
+          <th>Data Saída</th>
+          <th>Observação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let acesso of acessos">
+          <td>{{ acesso.id }}</td>
+          <td>{{ acesso.veiculo?.pessoa?.nome }}</td>
+          <td>{{ acesso.veiculo?.placa }}</td>
+          <td>{{ acesso.entrada | date:'short' }}</td>
+          <td>{{ acesso.saida | date:'short' }}</td>
+          <td>{{ acesso.observacao }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="acessos.length === 0" class="alert alert-info">Nenhum acesso encontrado.</div>
+  </div>
+
+</div>

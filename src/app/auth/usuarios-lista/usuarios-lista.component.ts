@@ -97,7 +97,6 @@ export class UsuariosListaComponent implements OnInit {
          this.loading = false;
          },
          error: (erro) => {
-          console.log(erro)
           this.toast.show(erro.error.text, 'danger');
         },
          complete: () => {

@@ -1,5 +1,5 @@
 <div class="m-2">
-
+<h1>Veiculos</h1>
 <button class="btn btn-success mb-3" (click)="novoVeiculo()">Novo Veículo</button>
 <div class="mb-3">
   <input type="text" class="form-control" placeholder="Filtrar por placa/modelo..." [(ngModel)]="filtro" (input)="aplicarFiltro()">
@@ -29,8 +29,8 @@
       <td>{{ veiculo.pessoa.nome }}</td>
       <td>{{ veiculo.pessoa.cargo }}</td><td>{{ veiculo.pessoa.lotacao }}</td>
       <td>
-        <button class="btn btn-sm btn-primary me-2" (click)="abrirModalEdicao(veiculo)">Editar</button>
-        <button class="btn btn-sm btn-danger" (click)="excluirVeiculo(veiculo)">Excluir</button>
+        <button class="btn btn-sm btn-primary me-2" (click)="abrirModalEdicao(veiculo)"><i class="bi bi-pencil"></i></button>
+        <button class="btn btn-sm btn-danger" (click)="excluirVeiculo(veiculo)"><i class="bi bi-trash"></i></button>
       </td>
     </tr>
   </tbody>

@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { AcessoService } from '../services/acesso.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { AcessoEditarModalComponent } from './acesso-editar-modal.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from '../../shared/toast-global/toast.service';
+import { SpinComponent } from '../../shared/spin/spin.component';
 
 @Component({
   selector: 'app-acessos',
   templateUrl: './acessos.component.html',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgbAccordionModule, SpinComponent],
 })
 export class AcessosComponent implements OnInit {
+  loading = false;
   acessos: any[] = [];
   acessosFiltrados: any[] = [];
   filtro: string = '';
@@ -19,6 +21,20 @@ export class AcessosComponent implements OnInit {
   itensPorPagina = 10;
   colunaOrdenacao: string = '';
   direcaoOrdenacao: 'asc' | 'desc' = 'asc';
+
+  filtroAcesso = {
+    id: '',
+    entrada: '',
+    saida: '',
+    ativo: '',
+    observacao: '',
+    placa: '',
+    proprietario: '',
+    entrada_inicio:'',
+    entrada_final:'',
+    saida_inicio:'',
+    saida_final:''
+  };
 
   constructor(
     private acessoService: AcessoService,
@@ -33,21 +49,23 @@ export class AcessosComponent implements OnInit {
   carregarAcessos() {
     this.acessoService.getAll().subscribe((data) => {
       this.acessos = data;
-      console.log(this.acessos);
 
-      this.aplicarFiltro();
+      this.aplicarFiltroAvancado();
     });
   }
 
-  aplicarFiltro() {
-    this.acessosFiltrados = this.acessos.filter(
-      (a) =>
-        a.veiculo?.pessoa?.nome
-          ?.toLowerCase()
-          .includes(this.filtro.toLowerCase()) ||
-        a.veiculo?.placa?.toLowerCase().includes(this.filtro.toLowerCase()) ||
-        a.observacao?.toLowerCase().includes(this.filtro.toLowerCase())
-    );
+  aplicarFiltroAvancado() {
+    this.acessosFiltrados = this.acessos.filter((a) => {
+      const matchId = this.filtroAcesso.id === '' || String(a.id).includes(this.filtroAcesso.id);
+      const matchEntrada = this.filtroAcesso.entrada === '' || (a.entrada && new Date(a.entrada).toLocaleString().toLowerCase().includes(this.filtroAcesso.entrada.toLowerCase()));
+      const matchSaida = this.filtroAcesso.saida === '' || (a.saida && new Date(a.saida).toLocaleString().toLowerCase().includes(this.filtroAcesso.saida.toLowerCase()));
+      //const matchAtivo = this.filtroAcesso.ativo === '' || String(a.ativo).toLowerCase().includes(this.filtroAcesso.ativo.toLowerCase());
+      const matchObs = this.filtroAcesso.observacao === '' || (a.observacao && a.observacao.toLowerCase().includes(this.filtroAcesso.observacao.toLowerCase()));
+      const matchPlaca = this.filtroAcesso.placa === '' || (a.veiculo?.placa && a.veiculo.placa.toLowerCase().includes(this.filtroAcesso.placa.toLowerCase()));
+      const matchProprietario = this.filtroAcesso.proprietario === '' || (a.veiculo?.pessoa?.nome && a.veiculo.pessoa.nome.toLowerCase().includes(this.filtroAcesso.proprietario.toLowerCase()));
+      //return matchId && matchEntrada && matchSaida && matchAtivo && matchObs && matchPlaca && matchProprietario;
+      return matchId && matchEntrada && matchSaida && matchObs && matchPlaca && matchProprietario;
+    });
     this.paginaAtual = 1;
     if (this.colunaOrdenacao) {
       this.ordenarAcessos();

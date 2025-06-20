@@ -3,15 +3,18 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlterarSenhaComponent } from '../../auth/alterar-senha/alterar-senha.component';
 import { UsuarioLogadoService } from '../../auth/usuario-logado.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  imports: [NgbDropdownModule],
+  imports: [NgbDropdownModule, RouterModule],
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   nomeUsuario = 'Entrar';
+  private scope: String | null = null;
   private usuarioSub: any;
+
 
   constructor(
     private modalService: NgbModal,
@@ -21,11 +24,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.nomeUsuario = this.authService.getUsuarioLogado()?.sub || 'Entrar';
-    this.usuarioSub = this.usuarioLogadoService.usuario$.subscribe(usuario => {
-      if (usuario && usuario.sub) {
-        this.nomeUsuario = usuario.sub;
+    this.scope = this.authService.getScope();
+    this.usuarioSub = this.usuarioLogadoService.usuario$.subscribe(
+      (usuario) => {
+        if (usuario && usuario.sub) {
+          this.nomeUsuario = usuario.sub;
+        }
+        if (usuario && usuario.scope) {
+          this.scope = usuario.scope;
+        }
       }
-    });
+    );
   }
 
   ngOnDestroy() {
@@ -44,5 +53,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   isLogado(): boolean {
     return this.authService.isLoggedIn();
+  }
+  contemScope(permissao: string): boolean {
+    if (!this.scope || !permissao) return false;
+    return this.scope.toLowerCase().includes(permissao.toLowerCase());
   }
 }

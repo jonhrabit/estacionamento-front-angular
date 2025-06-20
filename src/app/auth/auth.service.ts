@@ -12,8 +12,8 @@ interface AuthSession {
   sub: string;
   iat: number;
   exp: number;
-  usrd:string;
-  scope:string
+  usrd: string;
+  scope: string;
   token: string;
 }
 
@@ -29,18 +29,15 @@ export class AuthService {
     username: string;
     password: string;
   }): Observable<LoginResponse> {
-    return this.http
-      .post<LoginResponse>('login', credentials)
-      .pipe(
-        tap((response) => {
-          const decoded = jwtDecode(response.token);
-          const dados = {...decoded, ...response}
-          sessionStorage.setItem(this.STORAGE_KEY, JSON.stringify(dados));
+    return this.http.post<LoginResponse>('login', credentials).pipe(
+      tap((response) => {
+        const decoded = jwtDecode(response.token);
+        const dados = { ...decoded, ...response };
+        sessionStorage.setItem(this.STORAGE_KEY, JSON.stringify(dados));
 
-
-    this.router.navigate(['/home']);
-        })
-      );
+        this.router.navigate(['/home']);
+      })
+    );
   }
 
   logout() {
@@ -54,9 +51,15 @@ export class AuthService {
   }
   getToken(): String | null {
     const dados = sessionStorage.getItem(this.STORAGE_KEY);
-    if(dados==null) return null;
+    if (dados == null) return null;
     const session: AuthSession = JSON.parse(dados);
     return session.token;
+  }
+  getScope(): String | null {
+    const dados = sessionStorage.getItem(this.STORAGE_KEY);
+    if (dados == null) return null;
+    const session: AuthSession = JSON.parse(dados);
+    return session.scope;
   }
 
   isLoggedIn(): boolean {

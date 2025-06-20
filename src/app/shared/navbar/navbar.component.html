@@ -1,6 +1,6 @@
 @if (isLogado()) {
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-  <a class="navbar-brand me-4" href="#">Estacionamento</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 d-print-none">
+  <a class="navbar-brand me-4" routerLink="/home">Estacionamento</a>
 
   <div class="collapse navbar-collapse">
     <!-- Esquerda -->
@@ -9,20 +9,20 @@
       <li class="nav-item dropdown" ngbDropdown>
         <div class="nav-link dropdown-toggle" ngbDropdownToggle>Cadastros</div>
         <ul ngbDropdownMenu>
-          <li><a class="dropdown-item"  href="/pessoas">Pessoas</a></li>
-          <li><a class="dropdown-item"  href="/veiculos">Veículos</a></li>
-          <li><a class="dropdown-item"  href="/acessos">Acessos</a></li>
+          <li><a class="dropdown-item" routerLink='/pessoas'>Pessoas</a></li>
+          <li><a class="dropdown-item" routerLink="/veiculos">Veículos</a></li>
+          <li><a class="dropdown-item" routerLink="/acessos">Acessos</a></li>
         </ul>
       </li>
-
-      <!-- Dropdown 2 -->
-     <!--  <li class="nav-item dropdown" ngbDropdown>
-        <a class="nav-link dropdown-toggle" ngbDropdownToggle >Relatórios</a>
+      @if (contemScope('ADMIN')) {
+      <li class="nav-item dropdown" ngbDropdown>
+        <a class="nav-link dropdown-toggle" ngbDropdownToggle>Relatórios</a>
         <ul ngbDropdownMenu>
-          <li><a class="dropdown-item" routerLink="/relatorio1">Relatório 1</a></li>
-          <li><a class="dropdown-item" routerLink="/relatorio2">Relatório 2</a></li>
+          <li><a class="dropdown-item" routerLink="/relatorios/acessos">Acessos</a></li>
+          <!-- <li><a class="dropdown-item" routerLink="/relatorio2">Relatório 2</a></li> -->
         </ul>
-      </li> -->
+      </li>
+      }
     </ul>
 
     <!-- Direita - Usuário com Dropdown -->
@@ -34,7 +34,9 @@
         </button>
         <ul ngbDropdownMenu aria-labelledby="userDropdown">
           <li><a class="dropdown-item" (click)="alterarSenha()">Alterar senha</a></li>
-          <li><a class="dropdown-item" href="/usuarios">Usuários</a></li>
+          @if (contemScope('ADMIN')) {
+          <li><a class="dropdown-item" routerLink="/usuarios">Usuários</a></li>
+          }
           <li><a class="dropdown-item" href="#" (click)="logout()">Sair</a></li>
         </ul>
       </li>
@@ -42,5 +44,3 @@
   </div>
 </nav>
 }
-
-

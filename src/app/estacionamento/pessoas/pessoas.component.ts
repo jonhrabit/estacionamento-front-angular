@@ -1,15 +1,16 @@
 import { ToastService } from './../../shared/toast-global/toast.service';
 import { Component, OnInit } from '@angular/core';
 import { PessoaService } from '../services/pessoa.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { PessoaEditarModalComponent } from './pessoa-editar-modal.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SpinComponent } from '../../shared/spin/spin.component';
 
 @Component({
   selector: 'app-pessoas',
   templateUrl: './pessoas.component.html',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SpinComponent, NgbAccordionModule],
 })
 export class PessoasComponent implements OnInit {
   pessoas: any[] = [];
@@ -19,6 +20,19 @@ export class PessoasComponent implements OnInit {
   itensPorPagina = 10;
   colunaOrdenacao: string = '';
   direcaoOrdenacao: 'asc' | 'desc' = 'asc';
+  loading = false;
+
+  filtroPessoa = {
+    id: '',
+    nome: '',
+    numFunc: '',
+    cargo: '',
+    lotacao: '',
+    tipoVinculo: '',
+    fgOuCc: '',
+    email: '',
+    ramal: ''
+  };
 
   constructor(
     private pessoaService: PessoaService,
@@ -31,9 +45,11 @@ export class PessoasComponent implements OnInit {
   }
 
   carregarPessoas() {
+    this.loading = true;
     this.pessoaService.getAll().subscribe((data) => {
       this.pessoas = data;
       this.aplicarFiltro();
+      this.loading = false;
     });
   }
 
@@ -41,6 +57,26 @@ export class PessoasComponent implements OnInit {
     this.pessoasFiltradas = this.pessoas.filter((p) =>
       p.nome.toLowerCase().includes(this.filtro.toLowerCase())
     );
+    this.paginaAtual = 1;
+    if (this.colunaOrdenacao) {
+      this.ordenarPessoas();
+    }
+  }
+
+  aplicarFiltroAvancado() {
+    this.pessoasFiltradas = this.pessoas.filter((p) => {
+      //const matchId = this.filtroPessoa.id === '' || String(p.id).includes(this.filtroPessoa.id);
+      const matchNome = this.filtroPessoa.nome === '' || (p.nome && p.nome.toLowerCase().includes(this.filtroPessoa.nome.toLowerCase()));
+      const matchNumFunc = this.filtroPessoa.numFunc === '' || (p.numFunc && String(p.numFunc).toLowerCase().includes(this.filtroPessoa.numFunc.toLowerCase()));
+      const matchCargo = this.filtroPessoa.cargo === '' || (p.cargo && p.cargo.toLowerCase().includes(this.filtroPessoa.cargo.toLowerCase()));
+      const matchLotacao = this.filtroPessoa.lotacao === '' || (p.lotacao && p.lotacao.toLowerCase().includes(this.filtroPessoa.lotacao.toLowerCase()));
+      const matchTipoVinculo = this.filtroPessoa.tipoVinculo === '' || (p.tipoVinculo && p.tipoVinculo.toLowerCase().includes(this.filtroPessoa.tipoVinculo.toLowerCase()));
+      const matchFgOuCc = this.filtroPessoa.fgOuCc === '' || (p.fgOuCc && p.fgOuCc.toLowerCase().includes(this.filtroPessoa.fgOuCc.toLowerCase()));
+      const matchEmail = this.filtroPessoa.email === '' || (p.email && p.email.toLowerCase().includes(this.filtroPessoa.email.toLowerCase()));
+      const matchRamal = this.filtroPessoa.ramal === '' || (p.ramal && String(p.ramal).toLowerCase().includes(this.filtroPessoa.ramal.toLowerCase()));
+      //return matchId && matchNome && matchNumFunc && matchCargo && matchLotacao && matchTipoVinculo && matchFgOuCc && matchEmail && matchRamal;
+      return matchNome && matchNumFunc && matchCargo && matchLotacao && matchTipoVinculo && matchFgOuCc && matchEmail && matchRamal;
+    });
     this.paginaAtual = 1;
     if (this.colunaOrdenacao) {
       this.ordenarPessoas();
