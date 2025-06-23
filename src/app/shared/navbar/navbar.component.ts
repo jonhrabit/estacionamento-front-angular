@@ -9,12 +9,14 @@ import { RouterModule } from '@angular/router';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   imports: [NgbDropdownModule, RouterModule],
+  styles: `
+     .active {font-weight: bold; background-color: #f8f9fa; color:#000 }
+  `,
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   nomeUsuario = 'Entrar';
   private scope: String | null = null;
   private usuarioSub: any;
-
 
   constructor(
     private modalService: NgbModal,

@@ -3,13 +3,14 @@ import { RouterOutlet } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { ToastGlobalComponent } from "./shared/toast-global/toast-global.component";
+import { FooterComponent } from "./shared/footer/footer.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, NgbModule, ToastGlobalComponent],
+  imports: [RouterOutlet, NavbarComponent, NgbModule, ToastGlobalComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'estacionamento-front-angular';
+  title = 'Estacionamento';
 }

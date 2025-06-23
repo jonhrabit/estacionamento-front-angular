@@ -1,8 +1,14 @@
 <div class="m-2">
-  <h1>Pessoas</h1>
+  <div class='row'>
+    <div class='col'>
+      <h1>Pessoas</h1>
+    </div>
+    <div class='col'>
+      <button class="btn btn-primary mb-3" (click)="novaPessoa()">Nova Pessoa</button>
+    </div>
+  </div>
   <app-spin [show]="loading" [size]="48"></app-spin>
   <div *ngIf="!loading">
-    <button class="btn btn-success mb-3" (click)="novaPessoa()">Nova Pessoa</button>
     <div ngbAccordion>
       <div ngbAccordionItem [collapsed]="true">
         <h2 ngbAccordionHeader>

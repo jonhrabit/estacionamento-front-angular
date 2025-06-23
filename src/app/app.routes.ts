@@ -9,6 +9,7 @@ import { AcessosComponent } from './estacionamento/acessos/acessos.component';
 import { FeedBloqueioComponent } from './auth/feed-bloqueio.component';
 import { AcessosRelatorioComponent } from './estacionamento/acessos/acessos-relatorio/acessos-relatorio.component';
 import { AcessosRelatorioPrintComponent } from './estacionamento/acessos/acessos-relatorio/acessos-relatorio-print.component';
+import { AboutComponent } from './shared/about/about.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -25,4 +26,5 @@ export const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: '403', component: FeedBloqueioComponent },
+  { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
 ];

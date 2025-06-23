@@ -1,6 +1,14 @@
 <div class="m-2">
-<h1>Veículos</h1>
-<button class="btn btn-success mb-3" (click)="novoVeiculo()">Novo Veículo</button>
+  <div class='row'>
+    <div class='col'>
+      <h1>Veículos</h1>
+
+    </div>
+    <div class='col'>
+      <button class="btn btn-primary mb-3" (click)="novoVeiculo()">Novo Veículo</button>
+
+    </div>
+  </div>
 <div class="mb-3">
   <input type="text" class="form-control" placeholder="Filtrar por placa, modelo, proprietário, cargo ou lotação..." [(ngModel)]="filtro" (input)="aplicarFiltro()">
 </div>

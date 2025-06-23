@@ -1,6 +1,14 @@
 <div class="m-2">
-<h2>Lista de Usuários</h2>
-<button class="btn btn-success mb-3" (click)="novoUsuario()">Novo Usuário</button>
+  <div class='row'>
+    <div class='col'>
+      <h2>Lista de Usuários</h2>
+
+    </div>
+    <div class='col'>
+      <button class="btn btn-primary" (click)="novoUsuario()">Novo Usuário</button>
+
+    </div>
+  </div>
 <div *ngIf="loading">Carregando usuários...</div>
 <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 <table class="table table-striped" *ngIf="!loading && usuarios.length">
@@ -49,7 +57,7 @@
       <td>{{ usuario.cadastro | date:'short' }}</td>
       <td>
         <button class="btn btn-sm btn-primary me-2" (click)="abrirModalEdicao(usuario)"><i class="bi bi-pencil"></i></button>
-        <button class="btn btn-sm btn-primary me-2" (click)="resetarSenhaUsuario(usuario)"><i class="bi bi-arrow-counterclockwise"></i></button>
+        <button class="btn btn-sm btn-secondary me-2" (click)="resetarSenhaUsuario(usuario)"><i class="bi bi-arrow-counterclockwise"></i></button>
         <button class="btn btn-sm btn-danger" (click)="excluirUsuario(usuario)"><i class="bi bi-trash"></i></button>
       </td>
     </tr>

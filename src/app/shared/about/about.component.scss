@@ -1,0 +1,40 @@
+.about-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 32px 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  font-size: 1.1rem;
+}
+.about-container h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5em;
+  color: #1976d2;
+}
+.about-container h2 {
+  font-size: 1.3rem;
+  margin-top: 1.5em;
+  color: #333;
+}
+.about-container h3 {
+  font-size: 1.1rem;
+  margin-top: 1.2em;
+  color: #555;
+}
+.about-container ul {
+  margin: 0.5em 0 1em 1.2em;
+  padding: 0;
+}
+.about-container li {
+  margin-bottom: 0.3em;
+}
+.about-container section {
+  margin-bottom: 1.5em;
+}
+@media (max-width: 700px) {
+  .about-container {
+    padding: 16px 6px;
+    font-size: 1rem;
+  }
+}

@@ -1,5 +1,6 @@
 @if (isLogado()) {
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 d-print-none">
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 d-print-none"> -->
+<nav class="navbar navbar-expand-lg px-3 d-print-none bg-body-tertiary">
   <a class="navbar-brand me-4" routerLink="/home">Estacionamento</a>
 
   <div class="collapse navbar-collapse">
@@ -9,16 +10,16 @@
       <li class="nav-item dropdown" ngbDropdown>
         <div class="nav-link dropdown-toggle" ngbDropdownToggle>Cadastros</div>
         <ul ngbDropdownMenu>
-          <li><a class="dropdown-item" routerLink='/pessoas'>Pessoas</a></li>
-          <li><a class="dropdown-item" routerLink="/veiculos">Veículos</a></li>
-          <li><a class="dropdown-item" routerLink="/acessos">Acessos</a></li>
+          <li><a class="dropdown-item" routerLink='/pessoas' [routerLinkActive]="['active']">Pessoas</a></li>
+          <li><a class="dropdown-item" routerLink="/veiculos" [routerLinkActive]="['active']">Veículos</a></li>
+          <li><a class="dropdown-item" routerLink="/acessos" [routerLinkActive]="['active']">Acessos</a></li>
         </ul>
       </li>
       @if (contemScope('ADMIN')) {
       <li class="nav-item dropdown" ngbDropdown>
         <a class="nav-link dropdown-toggle" ngbDropdownToggle>Relatórios</a>
         <ul ngbDropdownMenu>
-          <li><a class="dropdown-item" routerLink="/relatorios/acessos">Acessos</a></li>
+          <li><a class="dropdown-item" routerLink="/relatorios/acessos" [routerLinkActive]="['active']">Acessos</a></li>
           <!-- <li><a class="dropdown-item" routerLink="/relatorio2">Relatório 2</a></li> -->
         </ul>
       </li>
@@ -28,7 +29,7 @@
     <!-- Direita - Usuário com Dropdown -->
     <ul class="navbar-nav ms-auto">
       <li class="nav-item dropdown" ngbDropdown>
-        <button class="btn btn-outline-light dropdown-toggle" id="userDropdown" ngbDropdownToggle>
+        <button class="btn btn-outline dropdown-toggle" id="userDropdown" ngbDropdownToggle>
           <i class="bi bi-person-circle me-1"></i>
           {{ nomeUsuario }}
         </button>
@@ -37,6 +38,10 @@
           @if (contemScope('ADMIN')) {
           <li><a class="dropdown-item" routerLink="/usuarios">Usuários</a></li>
           }
+          <li><a class="dropdown-item" routerLink="/about" [routerLinkActive]="['active']">Sobre</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
           <li><a class="dropdown-item" href="#" (click)="logout()">Sair</a></li>
         </ul>
       </li>

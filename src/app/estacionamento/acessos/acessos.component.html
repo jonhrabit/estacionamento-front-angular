@@ -1,8 +1,16 @@
 <div class="m-2">
-  <h1>Acessos</h1>
   <app-spin [show]="loading" [size]="48"></app-spin>
   <div *ngIf="!loading">
-    <button class="btn btn-success mb-3" (click)="novoAcesso()">Novo Acesso</button>
+    <div class='row'>
+      <div class='col-md-6'>
+        <h1>Acessos</h1>
+
+      </div>
+      <div class='col-md-6'>
+
+        <button class="btn btn-primary mb-3" (click)="novoAcesso()">Novo Acesso</button>
+      </div>
+    </div>
     <div class="mb-3" ngbAccordion>
       <div ngbAccordionItem [collapsed]="true">
         <h2 ngbAccordionHeader>
@@ -30,7 +38,7 @@
                     (input)="aplicarFiltroAvancado()">
                 </div>
               </div>
-             <!--  <div>
+              <!--  <div>
                 <button class="btn btn-success m-3" (click)="exportarDados()">Exportar dados...</button>
               </div> -->
             </ng-template>
