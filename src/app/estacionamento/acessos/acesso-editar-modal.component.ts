@@ -29,21 +29,9 @@ export class AcessoEditarModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.veiculoService.getAll().subscribe((veiculos) => (this.veiculos = veiculos));
-
-    if (this.acesso.entrada) {
-      this.acesso.entrada = this.toInputDateTimeLocal(this.acesso.entrada);
-    }
-    if (this.acesso.saida) {
-      this.acesso.saida = this.toInputDateTimeLocal(this.acesso.saida);
-    }
-  }
-
-  toInputDateTimeLocal(date: string | Date): string {
-    if (!date) return '';
-    const d = new Date(date);
-    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-    return d.toISOString().slice(0, 16);
+    this.veiculoService
+      .getAll()
+      .subscribe((veiculos) => (this.veiculos = veiculos));
   }
 
   searchVeiculo = (text$: Observable<string>) =>
@@ -89,13 +77,5 @@ export class AcessoEditarModalComponent implements OnInit {
 
   cancelar() {
     this.activeModal.dismiss('cancel');
-  }
-
-  setDataAtual(campo: 'entrada' | 'saida') {
-    const agora = new Date();
-    const local = new Date(agora.getTime() - agora.getTimezoneOffset() * 60000)
-      .toISOString()
-      .slice(0, 16);
-    this.acesso[campo] = local;
   }
 }

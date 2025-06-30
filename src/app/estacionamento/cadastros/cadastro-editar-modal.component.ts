@@ -27,7 +27,7 @@ export class CadastroEditarModalComponent implements OnInit {
     modelo: '',
     cor: '',
     foto: '',
-    temporario: false,
+    ativo: true,
     dataLimite: null as any,
   };
   errorMsg: string = '';

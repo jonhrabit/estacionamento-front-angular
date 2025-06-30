@@ -12,6 +12,6 @@ export interface Cadastro {
   modelo: string;
   cor: string;
   foto: string;
-  temporario: boolean;
+  ativo: boolean;
   dataLimite: Date;
 }

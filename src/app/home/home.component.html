@@ -9,22 +9,26 @@
             <tr>
               <th (click)="setOrdenacao('id')" style="cursor:pointer">ID
                 <span *ngIf="colunaOrdenacao==='id'">
-                  <i [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
+                  <i
+                    [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
                 </span>
               </th>
               <th (click)="setOrdenacao('veiculo')" style="cursor:pointer">Veículo
                 <span *ngIf="colunaOrdenacao==='veiculo'">
-                  <i [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
+                  <i
+                    [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
                 </span>
               </th>
               <th (click)="setOrdenacao('entrada')" style="cursor:pointer">Data Entrada
                 <span *ngIf="colunaOrdenacao==='entrada'">
-                  <i [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
+                  <i
+                    [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
                 </span>
               </th>
               <th (click)="setOrdenacao('saida')" style="cursor:pointer">Data Saída
                 <span *ngIf="colunaOrdenacao==='saida'">
-                  <i [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
+                  <i
+                    [ngClass]="{'bi bi-caret-up-fill': direcaoOrdenacao==='asc', 'bi bi-caret-down-fill': direcaoOrdenacao==='desc'}"></i>
                 </span>
               </th>
               <th>Observação</th>
@@ -35,12 +39,17 @@
             <tr *ngFor="let acesso of acessos">
               <td>{{ acesso.id }}</td>
               <td>{{ acesso.veiculo.placa }}</td>
-              <td>{{ acesso.entrada | date:'short' }}</td>
+              <td>{{ acesso.entrada | date:'short' }}
+                @if (compararHorarios(acesso.entrada, acesso.veiculo.horario)==-1) {
+                <img src="assets/img/warning.png" alt="antecipado" style="max-width: 32px; max-height: 32px;" /> }
+              </td>
               <td>{{ acesso.saida | date:'short'}}</td>
               <td>{{ acesso.observacao }}</td>
               <td>
-                <button class="btn btn-sm btn-primary me-2" (click)="abrirModalEdicao(acesso)"><i class="bi bi-pencil"></i></button>
-                <button class="btn btn-sm btn-secondary" (click)="registrarSaida(acesso)"><i class="bi bi-box-arrow-right"></i></button>
+                <button class="btn btn-sm btn-primary me-2" (click)="abrirModalEdicao(acesso)"><i
+                    class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-secondary" (click)="registrarSaida(acesso)"><i
+                    class="bi bi-box-arrow-right"></i></button>
 
             </tr>
           </tbody>

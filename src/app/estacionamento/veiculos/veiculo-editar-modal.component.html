@@ -12,7 +12,7 @@
     <div class='row'>
       <div class='col-md-9'>
         <div class="mb-3">
-          <label for="pessoa" class="form-label">Pessoa</label>
+          <label for="pessoa" class="form-label">Proprietário</label>
           <input id="pessoa" name="pessoa" class="form-control" [ngbTypeahead]="searchPessoa"
             [(ngModel)]="veiculo.pessoa" [resultFormatter]="formatterPessoa" [inputFormatter]="formatterPessoa"
             [editable]="false" required />
@@ -20,7 +20,7 @@
       </div>
       <div class='col-md-3'>
         <div class="mb-3">
-          <label for="placa" class="form-label">Placa</label>
+          <label for="placa" class="form-label">Placa*</label>
           <input id="placa" name="placa" class="form-control" [(ngModel)]="veiculo.placa" required />
         </div>
       </div>
@@ -41,27 +41,46 @@
       </div>
       <div class='col-md-3'>
         <div class="mb-3">
-          <label for="temporario" class="form-label">Temporário</label>
-          <input id="temporario" name="temporario" type="checkbox" class="form-check-input ms-2"
-            [(ngModel)]="veiculo.temporario" />
+          <label for="ativo" class="form-label">Ativo</label>
+          <input id="ativo" name="ativo" type="checkbox" class="form-check-input ms-2" [(ngModel)]="veiculo.ativo" />
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class='col'>
+        <div class="mb-3">
+          <label for="dataLimite" class="form-label">Data Limite</label>
+          <input id="dataLimite" name="dataLimite" type="date" class="form-control"
+            [(ngModel)]="veiculo.dataLimite" />
+        </div>
+      </div>
+      <div class='col'>
+        <div class="mb-3">
+          <label for="horario" class="form-label">A partir</label>
+          <input id="horario" name="horario" type="time" class="form-control"
+            [(ngModel)]="veiculo.horario"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="mb-3">
+            <label for="observacao" class="form-label">Observação</label>
+            <input id="observacao" name="observacao" class="form-control" [(ngModel)]="veiculo.observacao" />
+          </div>
+        </div>
+      </div>
 
-    <div class='row'>
+    </div>
+
+    <!--  <div class='row'>
       <div class='col-md-6'>
         <div class="mb-3">
           <label for="foto" class="form-label">Foto (URL)</label>
           <input id="foto" name="foto" class="form-control" [(ngModel)]="veiculo.foto" />
         </div>
       </div>
-      <div class='col-md-6'>
-        <div class="mb-3">
-          <label for="dataLimite" class="form-label">Data Limite</label>
-          <input id="dataLimite" name="dataLimite" type="date" class="form-control" [(ngModel)]="veiculo.dataLimite" />
-        </div>
-      </div>
-    </div>
+
+    </div> -->
 
 
 

@@ -19,17 +19,11 @@
     </div>
     <div class="mb-3 d-flex align-items-center">
       <label for="entrada" class="form-label me-2">Entrada</label>
-      <input id="entrada" name="entrada" type="datetime-local" class="form-control me-2" [(ngModel)]="acesso.entrada" />
-      <button type="button" class="btn btn-outline-secondary" (click)="setDataAtual('entrada')" title="Agora">
-        <i class="bi bi-clock"></i>
-      </button>
+      <input id="entrada" name="entrada" type="datetime-local" class="form-control" [(ngModel)]="acesso.entrada" />
     </div>
     <div class="mb-3 d-flex align-items-center">
       <label for="saida" class="form-label me-2">Saída</label>
-      <input id="saida" name="saida" type="datetime-local" class="form-control me-2" [(ngModel)]="acesso.saida" />
-      <button type="button" class="btn btn-outline-secondary" (click)="setDataAtual('saida')" title="Agora">
-        <i class="bi bi-clock"></i>
-      </button>
+      <input id="saida" name="saida" type="datetime-local" class="form-control" [(ngModel)]="acesso.saida" />
     </div>
     <div class="mb-3">
       <label for="observacao" class="form-label">Observação</label>

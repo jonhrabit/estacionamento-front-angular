@@ -4,11 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PessoaService } from '../services/pessoa.service';
 import { Observable, of } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-veiculo-editar-modal',
@@ -22,8 +18,10 @@ export class VeiculoEditarModalComponent implements OnInit {
     modelo: '',
     cor: '',
     foto: '',
-    temporario: false,
+    ativo: false,
     dataLimite: null,
+    horario: null,
+    observacao: null,
     pessoa: null,
   };
 
@@ -58,14 +56,11 @@ export class VeiculoEditarModalComponent implements OnInit {
 
   salvar() {
     this.errorMsg = '';
-    // Exemplo de validação simples
-    if (!this.veiculo.placa || !this.veiculo.modelo) {
+    if (!this.veiculo.placa) {
       this.errorMsg = 'Preencha todos os campos obrigatórios.';
       return;
     }
-    // Salva apenas o id da pessoa selecionada
-
-    (this.veiculo);
+    console.log(this.veiculo);
     this.activeModal.close(this.veiculo);
   }
 

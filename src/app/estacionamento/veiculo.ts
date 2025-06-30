@@ -8,8 +8,10 @@ export interface Veiculo {
   modelo: string;
   cor: string;
   foto: string;
-  temporario: boolean;
+  ativo: boolean;
+  horario:string;
   dataLimite: Date;
+  observacao:string;
   pessoa: Pessoa; // Supondo que Pessoa é uma interface definida em outro lugar
   // Métodos adicionais podem ser definidos aqui, se necessário
 

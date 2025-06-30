@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit {
     this.acessoService.setSaida(acesso.id).subscribe({
       next: (data) => {
         this.toastSevice.show('Saída registrada com sucesso!', 'success');
-        this.ngOnInit()
+        this.ngOnInit();
       },
       error: (erro) => {
         console.error(erro);
@@ -98,12 +98,53 @@ export class HomeComponent implements OnInit {
     });
   }
   abrirModalEdicao(acesso: any) {
-    const modalRef = this.modalService.open(AcessoEditarModalComponent, { size: 'lg' });
+    const modalRef = this.modalService.open(AcessoEditarModalComponent, {
+      size: 'lg',
+    });
     modalRef.componentInstance.acesso = { ...acesso };
-    modalRef.result.then((result) => {
-      if (result) {
-        this.acessoService.update(result.id, result).subscribe(() => this.ngOnInit());
-      }
-    }, () => {});
+    modalRef.result.then(
+      (result) => {
+        if (result) {
+          this.acessoService
+            .update(result.id, result)
+            .subscribe(() => this.ngOnInit());
+        }
+      },
+      () => {}
+    );
+  }
+
+  /**
+   * Compara um horário no formato 'HH:mm' com um Date.
+   * @returns -1 se horario1 < horario2, 0 se iguais, 1 se horario1 > horario2
+   */
+  compararHorarios(horario1: Date, horario2?: string | Date): number {
+    // Extrai horas e minutos do primeiro horário (string)
+    if(horario2==null){
+      return 0;
+    }
+    horario1 = new Date(horario1);
+
+    let h1 = horario1.getHours();
+    let m1 = horario1.getMinutes();
+
+    if (!horario2) {
+      horario2 = new Date();
+    }
+
+    // Extrai horas e minutos do segundo horário (Date ou string)
+    let h2: number, m2: number;
+    if (horario2 instanceof Date) {
+      h2 = horario2.getHours();
+      m2 = horario2.getMinutes();
+    } else {
+      [h2, m2] = horario2.split(':').map(Number);
+    }
+
+    if (h1 < h2) return -1;
+    if (h1 > h2) return 1;
+    if (m1 < m2) return -1;
+    if (m1 > m2) return 1;
+    return 0;
   }
 }

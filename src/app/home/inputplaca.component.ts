@@ -6,7 +6,6 @@ import { Veiculo } from '../estacionamento/veiculo';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AcessoService } from '../estacionamento/services/acesso.service';
-import { Acesso } from '../estacionamento/acesso';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CadastroEditarModalComponent } from '../estacionamento/cadastros/cadastro-editar-modal.component';
 import { CadastroService } from '../estacionamento/services/cadastro.service';
@@ -30,7 +29,8 @@ import { CadastroService } from '../estacionamento/services/cadastro.service';
         <app-clock></app-clock>
       </div>
     </div>
-    @if (veiculoEncontrado) {
+    @if(veiculoEncontrado) { @switch (this.statusVeiculoLocalizado()) { @case
+    ("ok") {
     <div class="alert alert-info mt-4 text-center">
       <div class="row">
         <div class="col-md-6 fs-3">
@@ -54,13 +54,84 @@ import { CadastroService } from '../estacionamento/services/cadastro.service';
         </div>
       </div>
     </div>
-    }@else{ @if (placa.length == 7) {
+
+    } @case ("desativado") {
+    <div class="alert alert-danger mt-4 text-center">
+      <div class="row">
+        <div class="col-md-6 fs-3">
+          Placa <b>{{ veiculoEncontrado.placa }}</b
+          ><br />
+          {{ veiculoEncontrado.pessoa.nome }}<br />
+          {{ veiculoEncontrado.pessoa.cargo }} <br />
+          {{ veiculoEncontrado.pessoa.lotacao }}
+        </div>
+        <div class="col-md-6">
+          <div class="fs-3">Veículo INATIVO</div>
+        </div>
+      </div>
+    </div>
+
+    } @case ("antecipado") {
+    <div class="alert alert-warning mt-4 text-center">
+      <div class="row">
+        <div class="col-md-6 fs-3">
+          Placa <b>{{ veiculoEncontrado.placa }}</b
+          ><br />
+          {{ veiculoEncontrado.pessoa.nome }}<br />
+          {{ veiculoEncontrado.pessoa.cargo }} <br />
+          {{ veiculoEncontrado.pessoa.lotacao }}
+        </div>
+        <div class="col-md-6">
+          <div class="fs-3">Veículo ANTECIPADO</div>
+          <div class="fs-3">{{ veiculoEncontrado.horario }}</div>
+
+          <input
+            type="text"
+            class="form-control mb-2"
+            placeholder="Observação (opcional)"
+            [(ngModel)]="observacao"
+            name="observacao"
+          />
+          <button
+            class="btn btn-warning w-100"
+            (click)="registrarAcessoDialogo()"
+          >
+            Registrar Acesso
+          </button>
+        </div>
+      </div>
+    </div>
+
+    } @case ("vencido") {
+    <div class="alert alert-danger mt-4 text-center">
+      <div class="row">
+        <div class="col-md-6 fs-3">
+          Placa <b>{{ veiculoEncontrado.placa }}</b
+          ><br />
+          {{ veiculoEncontrado.pessoa.nome }}<br />
+          {{ veiculoEncontrado.pessoa.cargo }} <br />
+          {{ veiculoEncontrado.pessoa.lotacao }}
+        </div>
+        <div class="col-md-6">
+          <div class="fs-3">Veículo VENCIDO</div>
+          <div class="fs-3">
+            {{ veiculoEncontrado.dataLimite | date : 'dd/MM/yyyy' }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    } } }@else{ @if (placa.length == 7) {
     <div class="alert alert-danger mt-4 text-center">
       <div class="row">
         <div class="col-md-6 fs-4">
           <div class="row">
             <div class="col-md-4">
-            <img src="assets/img/abort.png" alt="negado" style="max-width: 64px; max-height: 64px;" />
+              <img
+                src="assets/img/abort.png"
+                alt="negado"
+                style="max-width: 64px; max-height: 64px;"
+              />
             </div>
             <div class="col-md-8">
               Placa {{ placa }}<br /><b>Não</b> Localizada
@@ -135,6 +206,16 @@ export class InputplacaComponent {
     }
   }
 
+  registrarAcessoDialogo() {
+    if (
+      window.confirm(
+        'Deseja realmente registrar o acesso para este veículo ANTECIPADO?'
+      )
+    ) {
+      this.registrarAcesso();
+    }
+  }
+
   cadastrar() {
     const modalRef = this.modalService.open(CadastroEditarModalComponent, {
       size: 'lg',
@@ -153,7 +234,7 @@ export class InputplacaComponent {
       modelo: '',
       cor: '',
       foto: '',
-      temporario: false,
+      ativo: false,
       dataLimite: null,
     };
     modalRef.result.then(
@@ -187,5 +268,62 @@ export class InputplacaComponent {
       },
       () => {}
     );
+  }
+
+  compararDatas(data1: Date | string, data2?: Date | string): number {
+    if (data2 == null) {
+      data2 = new Date();
+    }
+    const d1 = new Date(data1);
+    const d2 = new Date(data2);
+    if (d1 < d2) return -1;
+    if (d1 > d2) return 1;
+    return 0;
+  }
+
+  /**
+   * Compara um horário no formato 'HH:mm' com um Date.
+   * @returns -1 se horario1 < horario2, 0 se iguais, 1 se horario1 > horario2
+   */
+  public compararHorarios(horario1: string, horario2?: string | Date): number {
+    // Extrai horas e minutos do primeiro horário (string)
+
+    const [h1, m1] = horario1.split(':').map(Number);
+
+    if (!horario2) {
+      horario2 = new Date();
+    }
+
+    // Extrai horas e minutos do segundo horário (Date ou string)
+    let h2: number, m2: number;
+    if (horario2 instanceof Date) {
+      h2 = horario2.getHours();
+      m2 = horario2.getMinutes();
+    } else {
+      [h2, m2] = horario2.split(':').map(Number);
+    }
+
+    if (h1 < h2) return -1;
+    if (h1 > h2) return 1;
+    if (m1 < m2) return -1;
+    if (m1 > m2) return 1;
+    return 0;
+  }
+
+  statusVeiculoLocalizado(): string {
+    if (this.veiculoEncontrado?.ativo == false) {
+      return 'desativado';
+    }
+    if (this.veiculoEncontrado?.dataLimite) {
+      if (this.compararDatas(this.veiculoEncontrado?.dataLimite) == -1) {
+        return 'vencido';
+      }
+    }
+    if (this.veiculoEncontrado?.horario) {
+      if (this.compararHorarios(this.veiculoEncontrado?.horario) == 1) {
+        return 'antecipado';
+      }
+    }
+    return 'ok';
   }
 }
